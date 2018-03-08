@@ -1,0 +1,26 @@
+{
+    "port": {
+        "dev": 8080
+    },
+    "database": {
+        "dev": {
+            "uri": "mongodb://localhost",
+            "name": "test",
+            "port": "27017"
+        },
+        "prod": {
+            "uri": "mongodb://heroku_xm95hrx1:mdk8i4rjn2ki4i1gt6s0aelv3c@ds155191.mlab.com",
+            "name": "heroku_xm95hrx1",
+            "port": "55191"
+        }
+    },
+    "security": {
+        "tokenLife" : 3600
+    },
+    "host": "localhost",
+    "protocol": "http",
+    "baseUrl": "/api",
+    "passRecovery": {
+        "tokenLife": "12h"
+    }
+}
