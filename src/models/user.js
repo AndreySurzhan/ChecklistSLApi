@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt-nodejs');
 const mongoose = require('mongoose');
 /// Models
 const Checklist = require('./checklist');
-const Setting = require('./setting');
 /// Local variables
 let Schema = mongoose.Schema;
 let User;
@@ -50,16 +49,14 @@ UserSchema = new Schema({
     }],
 
     /**
-     * The setting link.
+     * The languages to use for translation.
      *
-     * @type ObjectId
+     * @type String[]
      * @memberof models/UserSchema
      */
-    settings: {
-        type: Schema.Types.ObjectId,
-        ref: 'Settings',
-        default: null
-    },
+    languages: [{
+        type: String
+    }],
 
     /**
      * The creation date.
@@ -109,7 +106,6 @@ UserSchema.methods.generateHash = (password) => {
 UserSchema.methods.validPassword = (password) => {
     return bcrypt.compareSync(password, this.password);
 };
-
 
 if (mongoose.models.User) {
     User = mongoose.model('User');
