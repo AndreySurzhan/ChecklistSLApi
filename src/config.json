@@ -9,9 +9,9 @@
             "port": "27017"
         },
         "prod": {
-            "uri": "mongodb://heroku_xm95hrx1:mdk8i4rjn2ki4i1gt6s0aelv3c@ds155191.mlab.com",
-            "name": "heroku_xm95hrx1",
-            "port": "55191"
+            "uri": "",
+            "name": "",
+            "port": ""
         }
     },
     "security": {

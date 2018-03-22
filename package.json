@@ -1,14 +1,15 @@
 {
     "name": "checklistsl-api",
     "version": "1.0.0",
-    "description": "web api for CheckListSL application",
+    "description": "Web api for CheckListSL application",
     "main": "src/server.js",
     "scripts": {
         "start": "NODE_ENV='prod' node src/server.js",
         "dev": "NODE_ENV='dev' nodemon src/server.js"
     },
     "keywords": [
-        "checklist"
+        "checklist",
+        "translator"
     ],
     "author": "Andrei Surzhan",
     "license": "ISC",

@@ -3,3 +3,5 @@ node_modules/
 .DS_Store
 models/.DS_Store
 build/
+package-lock.json
+.vscode/
