@@ -15,7 +15,9 @@
     "license": "ISC",
     "dependencies": {
         "bcrypt-nodejs": "0.0.3",
+        "config": "^1.30.0",
         "crypto": "^1.0.1",
-        "mongoose": "^5.0.9"
+        "mongoose": "^5.0.9",
+        "winston": "^2.4.1"
     }
 }

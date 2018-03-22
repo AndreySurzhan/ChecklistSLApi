@@ -1,0 +1,10 @@
+{
+    "database": {
+        "uri": "",
+        "name": "",
+        "port": ""
+    },
+    "host": "localhost",
+    "protocol": "http",
+    "loggingLevel": "info"
+}

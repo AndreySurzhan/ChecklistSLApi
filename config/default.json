@@ -1,0 +1,18 @@
+{
+    "port": 8080,
+    "database": {
+        "uri": "mongodb://localhost",
+        "name": "test",
+        "port": "27017"
+    },
+    "security": {
+        "tokenLife": 3600
+    },
+    "host": "localhost",
+    "protocol": "http",
+    "baseUrl": "/api",
+    "passRecovery": {
+        "tokenLife": "12h"
+    },
+    "loggingLevel": "debug"
+}
