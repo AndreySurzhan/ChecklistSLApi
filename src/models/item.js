@@ -5,9 +5,9 @@ const Checklist = require('./checklist');
 const Translation = require('./translation');
 const User = require('./user');
 /// Local variables
-let Schema = mongoose.Schema;
 let Item;
 let ItemSchema;
+let Schema = mongoose.Schema;
 
 /**
  * Item mongoose schema.
@@ -45,6 +45,16 @@ ItemSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Translation'
     }],
+
+    /**
+     * Marker that determins that item is checked.
+     *
+     * @type boolean
+     * @memberof models/ItemSchema
+     */
+    isChecked: {
+        type: Boolean
+    },
 
     /**
      * The creation date.

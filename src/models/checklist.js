@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const Item = require('./item');
 const User = require('./user');
 /// Local variables
-let Schema = mongoose.Schema;
 let Checklist;
 let ChecklistSchema;
+let Schema = mongoose.Schema;
 
 /**
  * Checklist mongoose schema.
@@ -46,6 +46,16 @@ ChecklistSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Item'
     }],
+
+    /**
+     * Marker that determins that checklist is active.
+     *
+     * @type boolean
+     * @memberof models/ChecklistSchema
+     */
+    isActive: {
+        type: Boolean
+    },
 
     /**
      * The creation date.

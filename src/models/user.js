@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 /// Models
 const Checklist = require('./checklist');
 /// Local variables
-let Schema = mongoose.Schema;
 let User;
 let UserSchema;
+let Schema = mongoose.Schema;
 
 /**
  * User mongoose schema.
@@ -33,7 +33,6 @@ UserSchema = new Schema({
      */
     password: {
         type: String,
-        unique: true,
         required: true
     },
 
