@@ -1,6 +1,7 @@
 const ChecklistRepo = require('../../src/repositories/checklist');
 const ItemRepo = require('../../src/repositories/item');
 const UserRepo = require('../../src/repositories/user');
+const TraslationModel = require('../../src/models/translation')
 
 
 describe('Integration testing for Repositories', () => {
@@ -116,6 +117,22 @@ describe('Integration testing for Repositories', () => {
             item = await this.itemRepo.update(item);
 
             expect(item).toBeTruthy();
+        });
+
+        it('should add translation to existing item', async() => {
+            let item = this.item;
+
+            item.translations.push({
+                language: 'russian',
+                translation: 'молоко',
+                created: new Date(),
+                createdBy: this.user._id
+            })
+
+            item = await this.itemRepo.update(item);
+
+            expect(item).toBeTruthy();
+            expect(item.translations.length).toBe(1)
         });
     });
 });

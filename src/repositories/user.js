@@ -9,8 +9,8 @@ module.exports = class UserRepository {
      * @param {Object} user
      * @param {string} user.password
      * @param {string} user.username
-     * @param {Date} user.created
-     * @param {Date} user.modified
+     * @param {?Date} user.created
+     * @param {?Date} user.modified
      * @param {string[]} user.languages
      * @param {?ObjectId[]} user.checklists
      * @returns {Promise <Query>}
@@ -18,6 +18,8 @@ module.exports = class UserRepository {
      */
     async insert(user) {
         let createdUser = null
+
+        user.created = new Date();
 
         try {
             user = new UserModel(user)
@@ -31,6 +33,10 @@ module.exports = class UserRepository {
             logging.error(error);
 
             return error;
+        }
+
+        if (!createdUser) {
+            return new Error('Failed to get user after it has been saved')
         }
 
         logging.info(`New user "${createdUser.username}" has been successfully created`);
@@ -52,10 +58,14 @@ module.exports = class UserRepository {
             existedUser = UserModel.findById(id)
                 .populate('checklists checklists.items checklists.items.translations');
         } catch (error) {
-            logging.error(`Failed to get user with id "${id}" from database`);
+            logging.error(`Failed to find user with id "${id}" from database`);
             logging.error(error);
 
             return error;
+        }
+
+        if (!existedUser) {
+            return new Error(`User with id "${id}" doesn't exist`)
         }
 
         logging.info(`User has been successfully found by id "${id}"`);
@@ -69,8 +79,7 @@ module.exports = class UserRepository {
      * @param {Object} user
      * @param {string} user.password
      * @param {string} user.username
-     * @param {Date} user.created
-     * @param {Date} user.modified
+     * @param {?Date} user.modified
      * @param {string[]} user.languages
      * @param {?ObjectId[]} user.checklists
      * @returns {Promise <Query>}
@@ -98,6 +107,10 @@ module.exports = class UserRepository {
             logging.error(error);
 
             return error;
+        }
+
+        if (!updatedUser) {
+            return new Error(`Failed to get updated user with id "${user._id}"`)
         }
 
         logging.info(`User with username ${updatedUser.username} has been succesfully updated`);

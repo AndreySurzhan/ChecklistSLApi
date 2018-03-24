@@ -33,6 +33,10 @@ module.exports = class ChecklistRepository {
             return error;
         }
 
+        if (!createdChechlist) {
+            return new Error('Failed to get checklist after it\'s been saved')
+        }
+
         logging.info(`New checklist "${createdChechlist._id}" has been successfully created`);
         return createdChechlist;
     }
@@ -57,6 +61,10 @@ module.exports = class ChecklistRepository {
             logging.error(error);
 
             return error;
+        }
+
+        if (!existedChecklists) {
+            return new Error(`Checklists with user id "${userId}" don't exist`)
         }
 
         logging.info(`All checklists have been successfully found by user id "${userId}"`);
@@ -91,6 +99,7 @@ module.exports = class ChecklistRepository {
                     items: checklist.items,
                     users: checklist.users,
                     isActive: checklist.isActive,
+                    created: new Date(),
                     modifiedBy: checklist.modifiedBy,
                     modified: new Date()
                 }
@@ -104,8 +113,37 @@ module.exports = class ChecklistRepository {
             return error;
         }
 
+        if (!updatedChecklist) {
+            return new Error(`Failed to get updated checklist with id "${checklist._id}"`)
+        }
+
         logging.info(`Checklist "${updatedChecklist._id}" has been succesfully updated`);
 
         return updatedChecklist;
+    }
+
+    async delete(id) {
+        let deletedChecklist = null;
+
+        try {
+            deletedChecklist = await ChecklistModel.deleteOne({
+                _id: id
+            }, {
+                new: true
+            })
+        } catch (error) {
+            logging.error(`Failed to delete checklist with id "${id}"`)
+            logging.error(error);
+
+            return error;
+        }
+
+        if (!deletedChecklist) {
+            return new Error(`Failed to get deleted checklist with id "${id}"`)
+        }
+
+        logging.info(`Checklist "${deletedChecklist._id}" has been succesfully deleted`);
+
+        return deletedChecklist;
     }
 }
