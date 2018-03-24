@@ -1,7 +1,7 @@
 /// Libs
 const mongoose = require('mongoose');
 /// Models
-const Checklist = require('./checklist');
+const Item = require('./item');
 const User = require('./user');
 /// Local variables
 let Schema = mongoose.Schema;
@@ -36,15 +36,6 @@ TranslationSchema = new Schema({
     },
 
     /**
-     * @type ObjectId
-     * @memberof models/TranslationSchema
-     */
-    modifiedBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'Checklist'
-    },
-
-    /**
      * The creation date.
      *
      * @type Date
@@ -55,30 +46,10 @@ TranslationSchema = new Schema({
     },
 
     /**
-     * The date of the last user modification.
-     *
-     * @type Date
-     * @memberof models/TranslationSchema
-     */
-    modified: {
-        type: Date,
-        default: Date.now
-    },
-
-    /**
      * @type ObjectId
      * @memberof models/TranslationSchema
      */
     createdBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
-
-    /**
-     * @type ObjectId
-     * @memberof models/TranslationSchema
-     */
-    modifiedBy: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     }

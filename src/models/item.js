@@ -15,14 +15,13 @@ let Schema = mongoose.Schema;
  */
 ItemSchema = new Schema({
     /**
-     * The item name.
+     * The item text.
      *
      * @type String
      * @memberof models/ItemSchema
      */
-    name: {
+    text: {
         type: String,
-        unique: true,
         required: true
     },
 
@@ -38,13 +37,12 @@ ItemSchema = new Schema({
     /**
      * The list of translation links.
      *
-     * @type ObjectId[]
+     * @type TranslationSchema[]
      * @memberof models/ItemSchema
      */
-    translations: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Translation'
-    }],
+    translations: [
+        Translation.schema
+    ],
 
     /**
      * Marker that determins that item is checked.

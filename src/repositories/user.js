@@ -28,10 +28,9 @@ module.exports = class UserRepository {
                 .populate('checklists checklists.items checklists.items.translations');
         } catch (error) {
             logging.error(`Failed to create new user ${user.username}`);
-            logging.error(console.error);
-            ß
+            logging.error(error);
 
-            return createdUser;
+            return error;
         }
 
         logging.info(`New user "${createdUser.username}" has been successfully created`);
@@ -39,7 +38,7 @@ module.exports = class UserRepository {
     }
 
     /**
-     * Method that gets exusting user by id
+     * Method that gets existing user by id
      * 
      * @async
      * @param {string} id 
@@ -54,15 +53,29 @@ module.exports = class UserRepository {
                 .populate('checklists checklists.items checklists.items.translations');
         } catch (error) {
             logging.error(`Failed to get user with id "${id}" from database`);
-            logging.error(console.error);
+            logging.error(error);
 
-            return existedUser;
+            return error;
         }
 
         logging.info(`User has been successfully found by id "${id}"`);
         return existedUser;
     }
 
+    /**
+     * Method that updates user data in database
+     * 
+     * @async
+     * @param {Object} user
+     * @param {string} user.password
+     * @param {string} user.username
+     * @param {Date} user.created
+     * @param {Date} user.modified
+     * @param {string[]} user.languages
+     * @param {?ObjectId[]} user.checklists
+     * @returns {Promise <Query>}
+     * @memberof UserRepository
+     */
     async update(user) {
         let updatedUser = null;
 
@@ -82,9 +95,9 @@ module.exports = class UserRepository {
             }).populate('checklists checklists.items checklists.items.translations');
         } catch (error) {
             logging.error(`Failed to update user with id "${user._id}" and username ${user.username}`)
-            logging.error(console.error);
+            logging.error(error);
 
-            return updatedUser;
+            return error;
         }
 
         logging.info(`User with username ${updatedUser.username} has been succesfully updated`);
