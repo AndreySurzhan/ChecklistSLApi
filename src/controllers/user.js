@@ -7,7 +7,7 @@ module.exports = class UserController {
     }
 
     async addNewUser(user) {
-        return await this.userRepo.inser(user);
+        return await this.userRepo.insert(user);
     }
 
     async getUserById(id) {

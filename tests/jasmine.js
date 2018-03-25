@@ -8,6 +8,7 @@ const SpecReporter = require('jasmine-spec-reporter');
 const jasmine = new Jasmine();
 
 jasmine.loadConfig(config);
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000
 jasmine.clearReporters();
 jasmine.addReporter(new SpecReporter());
 

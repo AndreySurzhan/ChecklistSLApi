@@ -9,15 +9,14 @@ module.exports = class Translate {
     async translateMany(text) {
         let translations = [];
 
-        for (let i = 0; i < languages.length; i++) {
+        for (let i = 0; i < this.user.languages.length; i++) {
             let translation = {};
             let response;
 
             try {
                 response = await translate(text, {
-                    to: languages[i]
+                    to: this.user.languages[i]
                 });
-                translation.translation = response.text
             } catch (error) {
                 logging.error(`Failed to translate "${text}"`)
                 logging.error(error);
@@ -25,7 +24,8 @@ module.exports = class Translate {
                 return error;
             }
 
-            translation.language = languages[i]
+            translation.translation = response.text
+            translation.language = this.user.languages[i]
             translation.created = new Date();
             translation.createdBy = this.user._id
 
