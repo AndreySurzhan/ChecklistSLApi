@@ -34,7 +34,7 @@ module.exports = class ItemController {
         return await this.itemRepo.update(item);
     }
 
-    async deleteItem(id) {
+    async deleteItemById(id) {
         return await this.itemRepo.delete(id);
     }
 };

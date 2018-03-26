@@ -14,6 +14,14 @@ module.exports = class UserController {
         return await this.userRepo.findById(id);
     }
 
+    async getUserByUsername(username) {
+        return await this.userRepo.findByUsername(username);
+    }
+
+    async getAllUsersByChecklistId(checlistId) {
+        return await this.userRepo.findAllByChecklistId(checlistId);
+    }
+
     async updateUser(user) {
         return await this.userRepo.update(user);
     }

@@ -14,5 +14,11 @@
     "passRecovery": {
         "tokenLife": "12h"
     },
-    "loggingLevel": "debug"
+    "loggingLevel": "debug",
+    "clients": {
+        "local": {
+            "name": "ChecklistSLUi",
+            "secret": "shouldbesomehashedvalue"
+        }
+    }
 }

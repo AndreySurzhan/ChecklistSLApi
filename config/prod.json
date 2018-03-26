@@ -6,5 +6,11 @@
     },
     "host": "localhost",
     "protocol": "http",
-    "loggingLevel": "info"
+    "loggingLevel": "info",
+    "clients": {
+        "local": {
+            "name": "ChecklistSLUi",
+            "secret": ""
+        }
+    }
 }

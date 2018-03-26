@@ -27,7 +27,7 @@ module.exports = class UserRepository {
             await user.save();
 
             createdUser = await UserModel.findById(user._id)
-                .populate('checklists checklists.items checklists.items.translations');
+                .populate('checklists checklists.items checklists.items.translations').exec();
         } catch (error) {
             logging.error(`Failed to create new user ${user.username}`);
             logging.error(error);
@@ -47,7 +47,7 @@ module.exports = class UserRepository {
      * Method that gets existing user by id
      * 
      * @async
-     * @param {string} id 
+     * @param {string | ObjectId} id 
      * @returns {Promise <Query>}
      * @memberof UserRepository
      */
@@ -55,7 +55,7 @@ module.exports = class UserRepository {
         let existedUser = null
 
         try {
-            existedUser = UserModel.findById(id)
+            existedUser = await UserModel.findById(id)
                 .populate('checklists checklists.items checklists.items.translations');
         } catch (error) {
             logging.error(`Failed to find user with id "${id}" from database`);
@@ -70,6 +70,68 @@ module.exports = class UserRepository {
 
         logging.info(`User has been successfully found by id "${id}"`);
         return existedUser;
+    }
+
+    /**
+     * Method that gets existing user by username
+     * 
+     * @async
+     * @param {string} username 
+     * @returns {Promise <Query>}
+     * @memberof UserRepository
+     */
+    async findByUsername(username) {
+        let existedUser = null
+
+        try {
+            existedUser = UserModel.findOne({
+                    username: username
+                })
+                .populate('checklists checklists.items checklists.items.translations');
+        } catch (error) {
+            logging.error(`Failed to find user with username "${username}" from database`);
+            logging.error(error);
+
+            return error;
+        }
+
+        if (!existedUser) {
+            return new Error(`User with username "${username}" doesn't exist`)
+        }
+
+        logging.info(`User has been successfully found by username "${username}"`);
+        return existedUser;
+    }
+
+    /**
+     * Method that gets existing users by checklistId
+     * 
+     * @async
+     * @param {string | ObjectId} checklistId 
+     * @returns {Promise <Query>}
+     * @memberof UserRepository
+     */
+    async findAllByChecklistId(checklistId) {
+        let existedUsers = [];
+
+        try {
+            existedUsers = await UserModel.find({
+                    checklists: checklistId
+                })
+                .populate('checklists checklists.items checklists.items.translations');
+        } catch (error) {
+            logging.error(`Failed to find users by checklistid "${checklistId}" from database`);
+            logging.error(error);
+
+            return error;
+        }
+
+        if (!existedUser) {
+            return new Error(`Users with checklist "${checklistId}" don't exist`)
+        }
+
+        logging.info(`Users has been successfully found by cehcklist id "${checklistId}"`);
+        return existedUsers;
     }
 
     /**

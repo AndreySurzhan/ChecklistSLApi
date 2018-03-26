@@ -41,6 +41,7 @@ describe('Integration testing for Repositories', () => {
             let user = await this.userRepo.insert(this.user);
 
             expect(user).toBeTruthy();
+            expect(user.hasOwnProperty('password')).not.toBe(true)
 
             this.user._id = user._id;
             this.checklist.users.push(this.user._id)
@@ -54,6 +55,7 @@ describe('Integration testing for Repositories', () => {
             let user = await this.userRepo.findById(this.user._id);
 
             expect(user).toBeTruthy();
+            expect(user.hasOwnProperty('password')).not.toBe(true)
         });
 
         it('should updated existing user', async() => {
@@ -64,6 +66,7 @@ describe('Integration testing for Repositories', () => {
             user = await this.userRepo.update(user);
 
             expect(user).toBeTruthy();
+            expect(user.hasOwnProperty('password')).not.toBe(true)
         });
     });
 

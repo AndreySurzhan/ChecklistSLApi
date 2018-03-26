@@ -10,29 +10,20 @@ passport.use(new LocalStrategy(
             if (err) {
                 return done(err);
             }
+
             if (!user) {
                 return done(null, false, {
-                    message: 'Incorrect username.'
+                    message: `Cannot find user with username "${username}"`
                 });
             }
-            if (!user.validPassword(password)) {
+
+            if (!user.verifyPassword(password)) {
                 return done(null, false, {
-                    message: 'Incorrect password.'
+                    message: 'Password is incorrect'
                 });
             }
 
-            var newUser = new User();
-
-            // set the user's local credentials
-            newUser.email = email;
-            newUser.password = newUser.generateHash(password);
-
-            // save the user
-            newUser.save(function (err) {
-                if (err)
-                    throw err;
-                return done(null, newUser);
-            });
+            return done(null, user);
         });
     }
 ));

@@ -151,7 +151,7 @@ module.exports = class ItemRepository {
         return deletedItem;
     }
 
-    async deleteAll(checklistId) {
+    async deleteAllByChecklistId(checklistId) {
         let deletedItem = null;
 
         try {
