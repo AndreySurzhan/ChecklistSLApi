@@ -1,7 +1,7 @@
 /// Libs
 const passport = require('../auth/passport');
 const config = require('config');
-// const checklistRoutes = require('./checklist');
+const checklistRoutes = require('./checklist');
 // const itemRoutes = require('./item');
 const userRoutes = require('./user');
 /// Local variables
@@ -17,7 +17,7 @@ module.exports = (app, router) => {
         });
     });
 
-    // checklistRoutes.register(router, authenticate);
+    checklistRoutes(router, authenticate);
     // itemRoutes.register(router, authenticate);
     userRoutes(router, authenticate);
 

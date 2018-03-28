@@ -6,7 +6,7 @@ module.exports = class ChecklistRepository {
      * Method that inserts new chechlist into database
      * 
      * @async
-     * @param {Object} chechlist
+     * @param {Object} checklist
      * @param {ObjectId[]} chechlist.items
      * @param {ObjectId[]} chechlist.users
      * @param {boolean} item.isActive
@@ -17,15 +17,17 @@ module.exports = class ChecklistRepository {
      * @returns {Promise <Query>}
      * @memberof ChecklistRepository
      */
-    async insert(chechlist) {
-        let createdChechlist = null
+    async insert(checklist) {
+        let createdChecklist = null
 
         try {
-            chechlist = new ChecklistModel(chechlist)
+            checklist.created = new Date();
 
-            await chechlist.save();
+            checklist = new ChecklistModel(checklist)
 
-            createdChechlist = await ChecklistModel.findOne(chechlist._id)
+            await checklist.save();
+
+            createdChecklist = await ChecklistModel.findOne(checklist._id);
         } catch (error) {
             logging.error(`Failed to insert new checklist`);
             logging.error(error);
@@ -33,12 +35,12 @@ module.exports = class ChecklistRepository {
             return error;
         }
 
-        if (!createdChechlist) {
+        if (!createdChecklist) {
             return new Error('Failed to get checklist after it\'s been saved')
         }
 
-        logging.info(`New checklist "${createdChechlist._id}" has been successfully created`);
-        return createdChechlist;
+        logging.info(`New checklist "${createdChecklist._id}" has been successfully created`);
+        return createdChecklist;
     }
 
     /**
@@ -75,15 +77,13 @@ module.exports = class ChecklistRepository {
      * Method that updates existing chechlist into database
      * 
      * @async
-     * @param {Object} chechlist
-     * @param {ObjectId} chechlist._id
-     * @param {ObjectId[]} chechlist.items
-     * @param {ObjectId[]} chechlist.users
+     * @param {Object} checklist
+     * @param {ObjectId} checklist._id
+     * @param {ObjectId[]} checklist.items
+     * @param {ObjectId[]} checklist.users
      * @param {boolean} item.isActive
-     * @param {Date} chechlist.created
-     * @param {?Date} chechlist.modified
-     * @param {ObjectId} chechlist.createdBy
-     * @param {ObjectId} chechlist.modifiedBy
+     * @param {?Date} checklist.modified
+     * @param {ObjectId} checklist.modifiedBy
      * @returns {Promise <Query>}
      * @memberof ChecklistRepository
      */
@@ -99,7 +99,6 @@ module.exports = class ChecklistRepository {
                     items: checklist.items,
                     users: checklist.users,
                     isActive: checklist.isActive,
-                    created: new Date(),
                     modifiedBy: checklist.modifiedBy,
                     modified: new Date()
                 }

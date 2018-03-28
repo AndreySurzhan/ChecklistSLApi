@@ -9,7 +9,6 @@ module.exports = class UserRepository {
      * @param {Object} user
      * @param {string} user.password
      * @param {string} user.username
-     * @param {?Date} user.created
      * @param {string[]} user.languages
      * @param {?ObjectId[]} user.checklists
      * @returns {Promise <Query>}
@@ -147,7 +146,7 @@ module.exports = class UserRepository {
      * @memberof UserRepository
      */
     async update(user) {
-        let updatedUser = null;
+        let updatedUser;
 
         try {
             updatedUser = await UserModel.findOneAndUpdate({

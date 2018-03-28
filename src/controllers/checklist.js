@@ -1,23 +1,32 @@
 const ChecklistRepo = require('../repositories/checklist');
 const ItemRepo = require('../repositories/item');
-const UserController = reuqire('../controllers/user');
+const UserController = require('../controllers/user');
 
 module.exports = class ChecklistController {
 
-    constructor(user) {
+    constructor() {
         this.checklistRepo = new ChecklistRepo();
-        this.user = user;
+        this.userController = new UserController();
     }
 
-    async addNewChecklist(checklist) {
-        let userController = new UserController();
+    async addNewChecklist(checklist, user) {
+        let newChecklist;
 
         try {
-            let newChecklist = await this.checklistRepo.inser(checklist);
+            checklist.users = [];
+            checklist.users.push(user._id);
+            checklist.createdBy = user._id;
+            checklist.modifiedBy = user._id;
 
-            this.user.checklists.push(newChecklist._id);
+            newChecklist = await this.checklistRepo.insert(checklist);
 
-            await userRepo.update(this.user);
+            if (!user.hasOwnProperty('checklists') || !(user.checklists instanceof Array)) {
+                user.checklists = [];
+            }
+
+            user.checklists.push(newChecklist._id);
+
+            await this.userController.updateUser(user);
         } catch (error) {
             return error;
         }
@@ -25,11 +34,13 @@ module.exports = class ChecklistController {
         return newChecklist
     }
 
-    async getAllChecklists() {
-        return await this.checklistRepo.findAll(this.user._id);
+    async getAllChecklists(user) {
+        return await this.checklistRepo.findAll(user._id);
     }
 
-    async updateChecklist(checklist) {
+    async updateChecklist(checklist, user) {
+        checklist.modifiedBy = user._id;
+
         return await this.checklistRepo.update(checklist);
     }
 
@@ -50,7 +61,7 @@ module.exports = class ChecklistController {
                     if (index > -1) {
                         users[i].checklists[k].splice(index, 1)
 
-                        await userController.update(users[i]);
+                        await this.userController.update(users[i]);
                     }
                 }
             }
