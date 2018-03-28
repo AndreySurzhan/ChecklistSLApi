@@ -16,13 +16,12 @@ module.exports = (router, authenticate) => {
         });
     });
 
-    router.get('/user', authenticate, (req, res, next) => {
-        this.userController.getUserById({
-            id: req.user._id
-        }).then((user) => {
-            res.json(user);
-        }).catch(() => {
-            next(error);
-        });
+    router.post('/user', authenticate, (req, res, next) => {
+        this.userController.getUserById(req.user._id)
+            .then((user) => {
+                res.json(user);
+            }).catch(() => {
+                next(error);
+            });
     });
 };

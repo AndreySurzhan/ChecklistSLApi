@@ -1,6 +1,7 @@
 /// Libs
 const bcrypt = require('bcrypt-nodejs');
 const mongoose = require('mongoose');
+const logging = require('../utils/logging');
 /// Models
 const Checklist = require('./checklist');
 /// Local variables
@@ -26,15 +27,14 @@ UserSchema = new Schema({
     },
 
     /**
-     * The user password.
+     * The hashed password.
      *
      * @type String
      * @memberof models/UserSchema
      */
-    password: {
+    hashedPassword: {
         type: String,
-        required: true,
-        select: false
+        required: true
     },
 
     /**
@@ -80,7 +80,6 @@ UserSchema = new Schema({
     }
 });
 
-
 /**
  * @function
  * @name generateHash
@@ -90,9 +89,33 @@ UserSchema = new Schema({
  *
  * @returns {string} hassedPass
  */
-UserSchema.methods.generateHash = (password) => {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+UserSchema.methods.generateHash = function(password) {
+    let hashedPassword;
+
+    try {
+        hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+    } catch (error) {
+        logging.error('Failed to hash password');
+        logging.error(error);
+        hashedPassword = null;
+    }
+    return hashedPassword;
 };
+
+/**
+ * @name password
+ * @type String
+ * @memberof models/UserSchema
+ * @virtual
+ */
+UserSchema.virtual('password')
+    .set(function(password) {
+        this._plainPassword = password;
+        this.hashedPassword = this.generateHash(password);
+    })
+    .get(function() {
+        return this._plainPassword;
+    });
 
 /**
  * @function
@@ -103,8 +126,17 @@ UserSchema.methods.generateHash = (password) => {
  *
  * @returns {boolean}
  */
-UserSchema.methods.validPassword = (password) => {
-    return bcrypt.compareSync(password, this.password);
+UserSchema.methods.validPassword = function(password) {
+    let isValid;
+
+    try {
+        isValid = bcrypt.compareSync(password, this.hashedPassword);
+    } catch (error) {
+        logging.error('Failed to validate password');
+        logging.error(error);
+        isValid = false;
+    }
+    return isValid;
 };
 
 if (mongoose.models.User) {

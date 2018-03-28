@@ -10,7 +10,6 @@ module.exports = class UserRepository {
      * @param {string} user.password
      * @param {string} user.username
      * @param {?Date} user.created
-     * @param {?Date} user.modified
      * @param {string[]} user.languages
      * @param {?ObjectId[]} user.checklists
      * @returns {Promise <Query>}
@@ -22,7 +21,7 @@ module.exports = class UserRepository {
         user.created = new Date();
 
         try {
-            user = new UserModel(user)
+            user = new UserModel(user);
 
             await user.save();
 

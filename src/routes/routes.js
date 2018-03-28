@@ -1,5 +1,5 @@
 /// Libs
-const passport = require('passport');
+const passport = require('../auth/passport');
 const config = require('config');
 // const checklistRoutes = require('./checklist');
 // const itemRoutes = require('./item');
