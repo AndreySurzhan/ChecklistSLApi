@@ -22,4 +22,13 @@ module.exports = (router, authenticate) => {
                 next(error);
             });
     });
+
+    router.put('/checklist/:checklistId/item', authenticate, (req, res, next) => {
+        this.checklistController.addItemToChecklist(req.body.item, req.user)
+            .then((checklist) => {
+                res.json(checklist);
+            }).catch(() => {
+                next(error);
+            });
+    });
 };

@@ -4,19 +4,15 @@ const TranslationController = require('../controllers/translation');
 
 module.exports = class ItemController {
 
-    constructor(userId) {
-        const userController = new UserController();
-
+    constructor() {
         this.itemRepo = new ItemRepo();
-
-        userController.getUserById(userId).then(user => {
-            this.user = user;
-        });
+        this.traslationController = new TranslationController();
     }
 
-    async addNewItem(item) {
-        item.createdBy = this.user._id;
-        item.modifiedBy = this.user._id;
+    async addNewItem(item, user) {
+        item.createdBy = user._id;
+        item.modifiedBy = user._id;
+        item.translations = await this.translationController.translateMany(item.text, user)
 
         return await this.itemRepo.inser(item);
     }
@@ -25,16 +21,18 @@ module.exports = class ItemController {
         return await this.itemRepo.findAll(checklistId);
     }
 
-    async updateItem(item) {
-        translationController = new TranslationController(this.user)
-
-        item.translations = await translationController.translateMany(item.text)
-        item.modifiedBy = this.user._id;
+    async updateItem(item, user) {
+        item.translations = await this.translationController.translateMany(item.text, user)
+        item.modifiedBy = user._id;
 
         return await this.itemRepo.update(item);
     }
 
     async deleteItemById(id) {
         return await this.itemRepo.delete(id);
+    }
+
+    async deleteAll(checklistId) {
+        return await this.itemRepo.deleteAllByChecklistId(checklistId);
     }
 };

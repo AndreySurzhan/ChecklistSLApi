@@ -44,10 +44,38 @@ module.exports = class ChecklistRepository {
     }
 
     /**
-     * Method that gets existing item by checklist id
+     * Method that gets existing checklist by checklist id
      * 
      * @async
-     * @param {string} userId 
+     * @param {ObjectId} checklistId 
+     * @returns {Promise <Query>}
+     * @memberof ChecklistRepository
+     */
+    async findbyId(checklistId) {
+        let existedChecklist = null
+
+        try {
+            existedChecklist = ChecklistModel.findById(checklistId)
+        } catch (error) {
+            logging.error(`Failed to find checklist by id "${checklistId}" from database`);
+            logging.error(error);
+
+            return error;
+        }
+
+        if (!existedChecklist) {
+            return new Error(`Checklist with id "${checklistId}" doesn't exist`)
+        }
+
+        logging.info(`Checklist has been successfully found by id "${checklistId}"`);
+        return existedChecklist;
+    }
+
+    /**
+     * Method that gets existing checklists by user id
+     * 
+     * @async
+     * @param {ObjectId} userId 
      * @returns {Promise <Query>[]}
      * @memberof ChecklistRepository
      */
@@ -121,6 +149,15 @@ module.exports = class ChecklistRepository {
         return updatedChecklist;
     }
 
+
+    /**
+     * Method that deletes existing chechlist from db
+     * 
+     * @async
+     * @param {ObjectId} id
+     * @returns {Promise <Query>}
+     * @memberof ChecklistRepository
+     */
     async delete(id) {
         let deletedChecklist = null;
 

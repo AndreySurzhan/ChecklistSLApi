@@ -1,11 +1,11 @@
 const ChecklistRepo = require('../repositories/checklist');
-const ItemRepo = require('../repositories/item');
+const ItemController = require('../controllers/item');
 const UserController = require('../controllers/user');
 
 module.exports = class ChecklistController {
-
     constructor() {
         this.checklistRepo = new ChecklistRepo();
+        this.itemController = new ItemController();
         this.userController = new UserController();
     }
 
@@ -14,6 +14,7 @@ module.exports = class ChecklistController {
 
         try {
             checklist.users = [];
+            checklist.items = [];
             checklist.users.push(user._id);
             checklist.createdBy = user._id;
             checklist.modifiedBy = user._id;
@@ -34,6 +35,20 @@ module.exports = class ChecklistController {
         return newChecklist
     }
 
+    async findChecklistById(id) {
+        return await this.checklistRepo.findbyId(id);
+    }
+
+    async addItemToChecklist(id, item, user) {
+        let addedItem = await this.itemController(item, user);
+        let checklist = await this.findChecklistById(id);
+
+        checklist.modifiedBy = user._id;
+        checklist.items = addedItem._id;
+
+        return await this.checklistRepo.update(checklist);
+    }
+
     async getAllChecklists(user) {
         return await this.checklistRepo.findAll(user._id);
     }
@@ -45,10 +60,8 @@ module.exports = class ChecklistController {
     }
 
     async deleteChecklistById(id) {
-        let itemRepo = new ItemRepo();
-
         try {
-            await itemRepo.deleteAllByChecklistId(id);
+            await this.itemController.deleteAll(id);
 
             let deletedChecklist = await this.checklistRepo.delete(id);
 
