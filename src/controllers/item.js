@@ -9,7 +9,8 @@ module.exports = class ItemController {
         this.traslationController = new TranslationController();
     }
 
-    async addNewItem(item, user) {
+    async addNewItem(item, checklistId, user) {
+        item.checklist = checklistId;
         item.createdBy = user._id;
         item.modifiedBy = user._id;
         item.translations = await this.translationController.translateMany(item.text, user)
@@ -28,11 +29,11 @@ module.exports = class ItemController {
         return await this.itemRepo.update(item);
     }
 
-    async deleteItemById(id) {
+    async deleteItemById(id, checklistId) {
         return await this.itemRepo.delete(id);
     }
 
-    async deleteAll(checklistId) {
-        return await this.itemRepo.deleteAllByChecklistId(checklistId);
+    async deleteMany(ids, checklistId) {
+        return await this.itemRepo.deleteManyById(ids, checklistId);
     }
 };

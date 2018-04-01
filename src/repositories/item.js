@@ -48,7 +48,7 @@ module.exports = class ItemRepository {
      * Method that gets existing item by checklist id
      * 
      * @async
-     * @param {string} itemId 
+     * @param {string} checklistId 
      * @returns {Promise <Query>[]}
      * @memberof ItemRepository
      */
@@ -96,12 +96,12 @@ module.exports = class ItemRepository {
 
         try {
             updatedItem = await ItemModel.findOneAndUpdate({
-                _id: item._id
+                _id: item._id,
+                checklist: item.checklist
             }, {
                 $set: {
                     text: item.text,
                     language: item.language,
-                    checklist: item.checklist,
                     isChecked: item.isChecked,
                     translations: item.translations,
                     modifiedBy: item.modifiedBy,
@@ -126,17 +126,18 @@ module.exports = class ItemRepository {
         return updatedItem;
     }
 
-    async delete(id) {
+    async delete(id, checklistId) {
         let deletedItem = null;
 
         try {
             deletedItem = await ItemModel.deleteOne({
-                _id: id
+                _id: id,
+                checklist: checklistId
             }, {
                 new: true
             })
         } catch (error) {
-            logging.error(`Failed to delete item by id "${id}"`)
+            logging.error(`Failed to delete item by id "${id}" and checklistId "${checklistId}"`)
             logging.error(error);
 
             return error;
@@ -151,28 +152,31 @@ module.exports = class ItemRepository {
         return deletedItem;
     }
 
-    async deleteAllByChecklistId(checklistId) {
-        let deletedItem = null;
+    async deleteManyById(ids, checklistId) {
+        let deletedItems = null;
 
         try {
-            deletedItem = await ItemModel.deleteMany({
+            deletedItems = await ItemModel.deleteMany({
+                _id: {
+                    $in: ids
+                },
                 checklist: checklistId
             }, {
                 new: true
             })
         } catch (error) {
-            logging.error(`Failed to delete item by checklist id "${item._id}"`)
+            logging.error(`Failed to delete many items by ids "${ids}"`)
             logging.error(error);
 
             return error;
         }
 
-        if (!deletedItem) {
-            return new Error(`Failed to get deleted item`)
+        if (!deletedItems) {
+            return new Error(`Failed to get deleted items`)
         }
 
-        logging.info(`Item "${deletedItem._id}" has been succesfully deleted`);
+        logging.info(`Items "${ids}" have been succesfully deleted`);
 
-        return deletedItem;
+        return deletedItems;
     }
 }

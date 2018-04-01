@@ -14,7 +14,9 @@ module.exports = (router, authenticate) => {
             });
     });
 
-    router.patch('/checklist', authenticate, (req, res, next) => {
+    router.patch('/checklist/:id', authenticate, (req, res, next) => {
+        req.body.checklist._id = req.params.id;
+
         this.checklistController.updateChecklist(req.body.checklist, req.user)
             .then((checklist) => {
                 res.json(checklist);
@@ -23,8 +25,17 @@ module.exports = (router, authenticate) => {
             });
     });
 
-    router.put('/checklist/:checklistId/item', authenticate, (req, res, next) => {
-        this.checklistController.addItemToChecklist(req.body.item, req.user)
+    router.put('/checklist/:id/item', authenticate, (req, res, next) => {
+        this.checklistController.addItemToChecklist(req.params.id, req.item, req.user)
+            .then((checklist) => {
+                res.json(checklist);
+            }).catch(() => {
+                next(error);
+            });
+    });
+
+    router.delete('/checklist/:id', authenticate, (req, res, next) => {
+        this.checklistController.deleteChecklistById(req.params.id)
             .then((checklist) => {
                 res.json(checklist);
             }).catch(() => {

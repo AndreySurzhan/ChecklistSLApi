@@ -40,11 +40,29 @@ module.exports = class ChecklistController {
     }
 
     async addItemToChecklist(id, item, user) {
-        let addedItem = await this.itemController(item, user);
         let checklist = await this.findChecklistById(id);
+        let addedItem = await this.itemController.addNewItem(item, user);
 
         checklist.modifiedBy = user._id;
-        checklist.items = addedItem._id;
+        checklist.items.push(addedItem._id);
+
+        return await this.checklistRepo.update(checklist);
+    }
+
+    async updatedItemInChecklist(id, item, user) {
+        item.checklist = id;
+
+        let updatedItem = await this.itemController.updateItem(item, user);
+
+        return await this.findChecklistById(id);
+    }
+
+    async deleteItemFromChecklist(id, itemId, user) {
+        let checklist = await this.findChecklistById(id);
+        let deletedItem = await this.itemController.deleteItemById(checklistId, itemId);
+
+        checklist.modifiedBy = user._id;
+        checklist.items.push(addedItem._id);
 
         return await this.checklistRepo.update(checklist);
     }
@@ -61,10 +79,8 @@ module.exports = class ChecklistController {
 
     async deleteChecklistById(id) {
         try {
-            await this.itemController.deleteAll(id);
-
             let deletedChecklist = await this.checklistRepo.delete(id);
-
+            let deletedItems = await this.itemController.deleteMany(deletedChecklist.items, deletedChecklist._id);
             let users = await this.userController.getAllUsersChecklists(id);
 
             for (let i = o; i < users.length; i++) {
