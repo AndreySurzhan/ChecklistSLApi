@@ -78,6 +78,7 @@ module.exports = class ItemRepository {
      * Method that updates existing item
      * 
      * @async
+     * @param {ObjectId} checklistId
      * @param {Object} item
      * @param {string} item.text
      * @param {ObjectId} item._id
@@ -91,13 +92,13 @@ module.exports = class ItemRepository {
      * @returns {Promise <Query>}
      * @memberof ItemRepository
      */
-    async update(item) {
+    async update(checklistId, id, item) {
         let updatedItem = null;
 
         try {
             updatedItem = await ItemModel.findOneAndUpdate({
-                _id: item._id,
-                checklist: item.checklist
+                _id: id,
+                checklist: checklistId
             }, {
                 $set: {
                     text: item.text,
