@@ -117,7 +117,7 @@ describe('Integration testing for Repositories', () => {
             item.text = 'milk';
             item.isChecked = true;
 
-            item = await this.itemRepo.update(item);
+            item = await this.itemRepo.update(this.checklist._id, this.item._id, item);
 
             expect(item).toBeTruthy();
         });
@@ -132,7 +132,7 @@ describe('Integration testing for Repositories', () => {
                 createdBy: this.user._id
             })
 
-            item = await this.itemRepo.update(item);
+            item = await this.itemRepo.update(this.checklist._id, this.item._id, item);
 
             expect(item).toBeTruthy();
             expect(item.translations.length).toBe(1)
