@@ -7,10 +7,10 @@ const routes = require('../src/routes/routes');
 const session = require('express-session');
 
 
-const databaseUri = config.get(`database.uri`);
+const databaseHost = config.get(`database.host`);
 const databasePort = config.get(`database.port`);
 const databaseName = config.get(`database.name`);
-const databaseUrl = `${databaseUri}:${databasePort}/${databaseName}`;
+const databaseUrl = `mongodb://${databaseHost}:${databasePort}/${databaseName}`;
 const appPort = config.get(`port`);
 const localClient = config.get('clients.local');
 

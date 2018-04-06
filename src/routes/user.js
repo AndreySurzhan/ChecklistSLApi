@@ -11,7 +11,7 @@ module.exports = (router, authenticate) => {
             password: req.body.password
         }).then((user) => {
             res.json(user);
-        }).catch(() => {
+        }).catch((error) => {
             next(error);
         });
     });
@@ -20,7 +20,18 @@ module.exports = (router, authenticate) => {
         this.userController.getUserById(req.user._id)
             .then((user) => {
                 res.json(user);
-            }).catch(() => {
+            }).catch((error) => {
+                next(error);
+            });
+    });
+
+    router.patch('/user', authenticate, (req, res, next) => {
+        req.user.languages = req.body.languages;
+
+        this.userController.updateUser(req.user)
+            .then((user) => {
+                res.json(user);
+            }).catch((error) => {
                 next(error);
             });
     });
