@@ -28,7 +28,7 @@ module.exports = class ItemRepository {
 
             await item.save();
 
-            createdItem = await ItemModel.findOne(item._id)
+            createdItem = await ItemModel.findOne(item._id);
         } catch (error) {
             logging.error('Failed to insert new item');
             logging.error(error);
@@ -58,7 +58,7 @@ module.exports = class ItemRepository {
         try {
             existedItems = ItemModel.find({
                 checklist: checklistId
-            })
+            });
         } catch (error) {
             logging.error(`Failed to find all items by checklist id "${checklistId}" from database`);
             logging.error(error);
@@ -110,7 +110,7 @@ module.exports = class ItemRepository {
                 },
             }, {
                 new: true
-            })
+            });
         } catch (error) {
             logging.error(`Failed to update item with id "${item._id}"`)
             logging.error(error);
@@ -131,12 +131,10 @@ module.exports = class ItemRepository {
         let deletedItem = null;
 
         try {
-            deletedItem = await ItemModel.deleteOne({
+            deletedItem = await ItemModel.findOneAndRemove({
                 _id: id,
                 checklist: checklistId
-            }, {
-                new: true
-            })
+            });
         } catch (error) {
             logging.error(`Failed to delete item by id "${id}" and checklistId "${checklistId}"`)
             logging.error(error);
@@ -153,18 +151,15 @@ module.exports = class ItemRepository {
         return deletedItem;
     }
 
-    async deleteManyById(ids, checklistId) {
+    async deleteManyById(ids) {
         let deletedItems = null;
 
         try {
             deletedItems = await ItemModel.deleteMany({
                 _id: {
                     $in: ids
-                },
-                checklist: checklistId
-            }, {
-                new: true
-            })
+                }
+            });
         } catch (error) {
             logging.error(`Failed to delete many items by ids "${ids}"`)
             logging.error(error);

@@ -24,8 +24,7 @@ module.exports = class UserRepository {
 
             await user.save();
 
-            createdUser = await UserModel.findById(user._id)
-                .populate('checklists checklists.items checklists.items.translations').exec();
+            createdUser = await UserModel.findById(user._id).populate('checklists');
         } catch (error) {
             logging.error(`Failed to create new user ${user.username}`);
             logging.error(error);
@@ -53,8 +52,12 @@ module.exports = class UserRepository {
         let existedUser = null
 
         try {
-            existedUser = await UserModel.findById(id)
-                .populate('checklists checklists.items checklists.items.translations');
+            existedUser = await UserModel.findById(id).populate({
+                path: 'checklists',
+                populate: {
+                    path: 'items'
+                }
+            });
         } catch (error) {
             logging.error(`Failed to find user with id "${id}" from database`);
             logging.error(error);
@@ -85,7 +88,12 @@ module.exports = class UserRepository {
             existedUser = UserModel.findOne({
                     username: username
                 })
-                .populate('checklists checklists.items checklists.items.translations');
+                .populate({
+                    path: 'checklists',
+                    populate: {
+                        path: 'items'
+                    }
+                });
         } catch (error) {
             logging.error(`Failed to find user with username "${username}" from database`);
             logging.error(error);
@@ -116,7 +124,12 @@ module.exports = class UserRepository {
             existedUsers = await UserModel.find({
                     checklists: checklistId
                 })
-                .populate('checklists checklists.items checklists.items.translations');
+                .populate({
+                    path: 'checklists',
+                    populate: {
+                        path: 'items'
+                    }
+                });
         } catch (error) {
             logging.error(`Failed to find users by checklistid "${checklistId}" from database`);
             logging.error(error);
@@ -124,7 +137,7 @@ module.exports = class UserRepository {
             return error;
         }
 
-        if (!existedUser) {
+        if (!existedUsers) {
             return new Error(`Users with checklist "${checklistId}" don't exist`)
         }
 
@@ -161,7 +174,12 @@ module.exports = class UserRepository {
                 }
             }, {
                 new: true
-            }).populate('checklists checklists.items checklists.items.translations');
+            }).populate({
+                path: 'checklists',
+                populate: {
+                    path: 'items'
+                }
+            });
         } catch (error) {
             logging.error(`Failed to update user with id "${user._id}" and username ${user.username}`)
             logging.error(error);

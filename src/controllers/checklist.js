@@ -133,6 +133,10 @@ module.exports = class ChecklistController {
     }
 
     async deleteChecklistById(id) {
+        let deletedChecklist;
+        let deletedItem;
+        let users;
+
         try {
             let deletedChecklist = await this.checklistRepo.delete(id);
             let deletedItems = await this.itemRepo.deleteManyById(deletedChecklist.items, checklistId);
@@ -144,8 +148,6 @@ module.exports = class ChecklistController {
 
                     if (index > -1) {
                         users[i].checklists[k].splice(index, 1)
-
-                        await this.userController.update(users[i]);
                     }
                 }
             }

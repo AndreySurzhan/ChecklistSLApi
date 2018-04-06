@@ -27,7 +27,7 @@ module.exports = class ChecklistRepository {
 
             await checklist.save();
 
-            createdChecklist = await ChecklistModel.findOne(checklist._id);
+            createdChecklist = await ChecklistModel.findOne(checklist._id).populate('items');
         } catch (error) {
             logging.error(`Failed to insert new checklist`);
             logging.error(error);
@@ -55,7 +55,7 @@ module.exports = class ChecklistRepository {
         let existedChecklist = null
 
         try {
-            existedChecklist = ChecklistModel.findById(checklistId)
+            existedChecklist = await ChecklistModel.findById(checklistId).populate('items');
         } catch (error) {
             logging.error(`Failed to find checklist by id "${checklistId}" from database`);
             logging.error(error);
@@ -83,9 +83,9 @@ module.exports = class ChecklistRepository {
         let existedChecklists = null
 
         try {
-            existedChecklists = ChecklistModel.find({
+            existedChecklists = await ChecklistModel.find({
                 users: userId
-            })
+            }).populate('items');
         } catch (error) {
             logging.error(`Failed to find all checklists by user id "${userId}" from database`);
             logging.error(error);
@@ -132,7 +132,7 @@ module.exports = class ChecklistRepository {
                 }
             }, {
                 new: true
-            })
+            }).populate('items');
         } catch (error) {
             logging.error(`Failed to update checklist with id "${checklist._id}"`)
             logging.error(error);
@@ -162,11 +162,9 @@ module.exports = class ChecklistRepository {
         let deletedChecklist = null;
 
         try {
-            deletedChecklist = await ChecklistModel.deleteOne({
+            deletedChecklist = await ChecklistModel.findOneAndRemove({
                 _id: id
-            }, {
-                new: true
-            })
+            });
         } catch (error) {
             logging.error(`Failed to delete checklist with id "${id}"`)
             logging.error(error);
