@@ -1,6 +1,6 @@
 {
     "database": {
-        "uri": "",
+        "host": "",
         "name": "",
         "port": ""
     },
