@@ -1,23 +1,29 @@
 const ChecklistRepo = require('../repositories/checklist');
 const ItemRepo = require('../repositories/item');
 const UserController = require('../controllers/user');
+const TranslationController = require('../controllers/translation');
+
 
 module.exports = class ChecklistController {
     constructor() {
         this.checklistRepo = new ChecklistRepo();
         this.itemRepo = new ItemRepo();
         this.userController = new UserController();
+        this.translationController = new TranslationController();
     }
 
     async addNewChecklist(checklist, user) {
+        let newChecklist;
+
         try {
             checklist.users = [];
             checklist.items = [];
+            checklist.isActive = true;
             checklist.users.push(user._id);
             checklist.createdBy = user._id;
             checklist.modifiedBy = user._id;
 
-            let newChecklist = await this.checklistRepo.insert(checklist);
+            newChecklist = await this.checklistRepo.insert(checklist);
 
             if (!user.hasOwnProperty('checklists') || !(user.checklists instanceof Array)) {
                 user.checklists = [];
@@ -34,8 +40,22 @@ module.exports = class ChecklistController {
     }
 
     async findChecklistById(id) {
+        let checklist;
+
         try {
-            let checklist = await this.checklistRepo.findbyId(id);
+            checklist = await this.checklistRepo.findbyId(id);
+        } catch (error) {
+            return error;
+        }
+
+        return checklist;
+    }
+
+    async getAllByUserId(userId) {
+        let checklist;
+
+        try {
+            checklist = await this.checklistRepo.findAll(userId);
         } catch (error) {
             return error;
         }
@@ -44,20 +64,25 @@ module.exports = class ChecklistController {
     }
 
     async addItemToChecklist(id, item, user) {
+        let addedItem;
+        let checklist;
+        let updatedChecklist;
+
         try {
-            let checklist = await this.findChecklistById(id);
+            checklist = await this.findChecklistById(id);
+            user = await this.userController.getUserByUsername(user.username);
 
             item.checklist = id;
             item.createdBy = user._id;
             item.modifiedBy = user._id;
             item.translations = await this.translationController.translateMany(item.text, user);
 
-            let addedItem = await this.itemController.addNewItem(item, user);
+            addedItem = await this.itemRepo.insert(item);
 
             checklist.modifiedBy = user._id;
             checklist.items.push(addedItem._id);
 
-            let updatedChecklist = await this.checklistRepo.update(checklist);
+            updatedChecklist = await this.checklistRepo.update(checklist);
         } catch (error) {
             return error;
         }
@@ -66,22 +91,23 @@ module.exports = class ChecklistController {
     }
 
     async updateItemInChecklist(id, itemId, item, user) {
+        let checklist;
+        let updatedItem;
+        let updatedChecklist;
+
         try {
-            let checklist = await this.findChecklistById(id);
-            let existingItem = await this.itemRepo.findbyId(itemId);
+            checklist = await this.findChecklistById(id);
 
             item.modifiedBy = user._id;
             item.checklist = id;
 
-            if (existingItem.text !== item.text) {
-                item.translations = await this.translationController.translateMany(item.text, user)
-            }
+            item.translations = await this.translationController.translateMany(item.text, user)
 
-            let updatedItem = await this.itemRepo.update(id, itemId, item);
+            updatedItem = await this.itemRepo.update(id, itemId, item);
 
             checklist.modifiedBy = user._id;
 
-            let updatedChecklist = await this.checklistRepo.update(checklist);
+            updatedChecklist = await this.checklistRepo.update(checklist);
         } catch (error) {
             return error;
         }
@@ -90,19 +116,23 @@ module.exports = class ChecklistController {
     }
 
     async deleteItemFromChecklist(id, itemId, user) {
+        let checklist;
+        let deletedItem;
+        let updatedChecklist;
+
         try {
-            let checklist = await this.findChecklistById(id);
-            let deletedItem = await this.itemRepo.delete(itemId, id);
+            deletedItem = await this.itemRepo.delete(itemId, id);
+            checklist = await this.findChecklistById(id);
 
             checklist.modifiedBy = user._id;
 
-            for (let i = o; i < checklist.items.length; i++) {
-                if (checklist.items[i]._id === deletedItem._id) {
+            for (let i = 0; i < checklist.items.length; i++) {
+                if (checklist.items[i].toString() === deletedItem._id.toString()) {
                     checklist.items.splice(i, 1)
                 }
             }
 
-            let updatedChecklist = await this.checklistRepo.update(checklist);
+            updatedChecklist = await this.checklistRepo.update(checklist);
         } catch (error) {
             return error;
         }
@@ -110,21 +140,13 @@ module.exports = class ChecklistController {
         return deletedItem;
     }
 
-    async getAllChecklists(user) {
-        try {
-            let checklists = await this.checklistRepo.findAll(user._id);
-        } catch (error) {
-            return error;
-        }
-
-        return checklists;
-    }
-
     async updateChecklist(checklist, user) {
+        let updatedChecklist;
+
         try {
             checklist.modifiedBy = user._id;
 
-            let updatedChecklist = await this.checklistRepo.update(checklist);
+            updatedChecklist = await this.checklistRepo.update(checklist);
         } catch (error) {
             return error;
         }
@@ -134,20 +156,22 @@ module.exports = class ChecklistController {
 
     async deleteChecklistById(id) {
         let deletedChecklist;
-        let deletedItem;
+        let deletedItems;
         let users;
 
         try {
-            let deletedChecklist = await this.checklistRepo.delete(id);
-            let deletedItems = await this.itemRepo.deleteManyById(deletedChecklist.items, checklistId);
-            let users = await this.userController.getAllUsersChecklists(id);
+            deletedChecklist = await this.checklistRepo.delete(id);
+            deletedItems = await this.itemRepo.deleteManyById(deletedChecklist.items);
+            users = await this.userController.getAllUsersByChecklistId(id);
 
-            for (let i = o; i < users.length; i++) {
+            for (let i = 0; i < users.length; i++) {
                 for (let k = 0; k < users[i].checklists.length; k++) {
                     let index = users[i].checklists[k].indexOf(id)
 
                     if (index > -1) {
                         users[i].checklists[k].splice(index, 1)
+
+                        await this.userController.updateUser(user[i]);
                     }
                 }
             }

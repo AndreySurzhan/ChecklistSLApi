@@ -6,7 +6,7 @@ module.exports = class Translate {
     async translateMany(text, user) {
         let translations = [];
 
-        for (let i = 0; i < this.user.languages.length; i++) {
+        for (let i = 0; i < user.languages.length; i++) {
             let translation = {};
             let response;
 
@@ -22,7 +22,7 @@ module.exports = class Translate {
             }
 
             translation.translation = response.text
-            translation.language = this.user.languages[i]
+            translation.language = user.languages[i]
             translation.created = new Date();
             translation.createdBy = user._id
 
