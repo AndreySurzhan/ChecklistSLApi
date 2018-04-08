@@ -48,10 +48,10 @@ mongoose.connect(databaseUrl, {
         logging.error(`Error happened connecting to mogoseDB '${databaseUrl}'`);
     } else {
         logging.info(`Successfully connected to mongoDB '${databaseUrl}'`);
-
-        server = app.listen(appPort);
-        logging.info(`The magic happens on port "${appPort}"`);
-
-        module.exports = server;
     }
 });
+
+server = app.listen(appPort);
+logging.info(`The magic happens on port "${appPort}"`);
+
+module.exports = server;
