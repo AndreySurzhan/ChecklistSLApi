@@ -57,12 +57,11 @@ module.exports = class UserController {
         return existingUsers;
     }
 
-    async updateUser(user) {
+    async updateUser(id, data) {
         let updateUser;
 
         try {
-            updateUser = await this.userRepo.update(user);
-
+            updateUser = await this.userRepo.update(id, data);
         } catch (error) {
             return error;
         }

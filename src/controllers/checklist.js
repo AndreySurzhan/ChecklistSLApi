@@ -14,6 +14,7 @@ module.exports = class ChecklistController {
 
     async addNewChecklist(checklist, user) {
         let newChecklist;
+        let userData = {};
 
         try {
             checklist.users = [];
@@ -25,18 +26,15 @@ module.exports = class ChecklistController {
 
             newChecklist = await this.checklistRepo.insert(checklist);
 
-            if (!user.hasOwnProperty('checklists') || !(user.checklists instanceof Array)) {
-                user.checklists = [];
-            }
+            userData.checklists = user.checklists;
+            userData.checklists.push(newChecklist._id);
 
-            user.checklists.push(newChecklist._id);
-
-            await this.userController.updateUser(user);
+            await this.userController.updateUser(user._id, userData);
         } catch (error) {
             throw error;
         }
 
-        return newChecklist
+        return newChecklist;
     }
 
     async findChecklistById(id) {
@@ -44,18 +42,6 @@ module.exports = class ChecklistController {
 
         try {
             checklist = await this.checklistRepo.findbyId(id);
-        } catch (error) {
-            throw error;
-        }
-
-        return checklist;
-    }
-
-    async getAllByUserId(userId) {
-        let checklist;
-
-        try {
-            checklist = await this.checklistRepo.findAll(userId);
         } catch (error) {
             throw error;
         }
@@ -78,10 +64,9 @@ module.exports = class ChecklistController {
 
             addedItem = await this.itemRepo.insert(item);
 
-            checklist.modifiedBy = user._id;
             checklist.items.push(addedItem._id);
 
-            await this.checklistRepo.update(checklist);
+            await this.updateChecklist(id, checklist, user);
         } catch (error) {
             throw error;
         }
@@ -91,21 +76,21 @@ module.exports = class ChecklistController {
 
     async updateItemInChecklist(id, itemId, item, user) {
         let checklist;
+        let existingItem;
         let updatedItem;
 
         try {
             checklist = await this.findChecklistById(id);
+            existingItem = await this.itemRepo.findById(itemId);
 
-            item.modifiedBy = user._id;
-            item.checklist = id;
+            if (item.text && item.text !== existingItem.text) {
+                item.text = item.text;
+                item.translations = await this.translationController.translateMany(item.text, user);
+            }
 
-            item.translations = await this.translationController.translateMany(item.text, user)
+            updatedItem = await this.itemRepo.update(itemId, item);
 
-            updatedItem = await this.itemRepo.update(id, itemId, item);
-
-            checklist.modifiedBy = user._id;
-
-            await this.checklistRepo.update(checklist);
+            await this.updateChecklist(id, checklist, user);
         } catch (error) {
             throw error;
         }
@@ -137,13 +122,13 @@ module.exports = class ChecklistController {
         return deletedItem;
     }
 
-    async updateChecklist(checklist, user) {
+    async updateChecklist(id, checklist, user) {
         let updatedChecklist;
 
         try {
             checklist.modifiedBy = user._id;
 
-            updatedChecklist = await this.checklistRepo.update(checklist);
+            updatedChecklist = await this.checklistRepo.update(id, checklist);
         } catch (error) {
             throw error;
         }

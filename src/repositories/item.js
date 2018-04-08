@@ -45,7 +45,7 @@ module.exports = class ItemRepository {
     }
 
     /**
-     * Method that gets existing item by checklist id
+     * Method that gets existing items by checklist id
      * 
      * @async
      * @param {string} checklistId 
@@ -75,54 +75,68 @@ module.exports = class ItemRepository {
     }
 
     /**
+     * Method that gets existing item by item id
+     * 
+     * @async
+     * @param {string} id 
+     * @returns {Promise <Query>[]}
+     * @memberof ItemRepository
+     */
+    async findById(id) {
+        let existedItem = null
+
+        try {
+            existedItem = ItemModel.findById(id);
+        } catch (error) {
+            logging.error(`Failed to find item by id "${id}" from database`);
+            logging.error(error);
+
+            throw error;
+        }
+
+        if (!existedItem) {
+            throw new Error(`Item with id "${id}" does\'t exist`)
+        }
+
+        logging.info(`Item has been successfully found by id "${id}"`);
+        return existedItem;
+    }
+
+    /**
      * Method that updates existing item
      * 
      * @async
-     * @param {ObjectId} checklistId
-     * @param {Object} item
-     * @param {string} item.text
-     * @param {ObjectId} item._id
-     * @param {TranslationSchema[]} item.translations
-     * @param {ObjectId} item.checklist
-     * @param {boolean} item.isChecked
-     * @param {Date} item.created
-     * @param {?Date} item.modified
-     * @param {ObjectId} item.createdBy
-     * @param {ObjectId} item.modifiedBy
+     * @param {Object} data
+     * @param {string} data.text
+     * @param {TranslationSchema[]} data.translations
+     * @param {ObjectId} data.checklist
+     * @param {boolean} data.isChecked
+     * @param {?Date} data.modified
+     * @param {ObjectId} data.modifiedBy
      * @returns {Promise <Query>}
      * @memberof ItemRepository
      */
-    async update(checklistId, id, item) {
+    async update(id, data) {
         let updatedItem = null;
 
         try {
             updatedItem = await ItemModel.findOneAndUpdate({
-                _id: id,
-                checklist: checklistId
-            }, {
-                $set: {
-                    text: item.text,
-                    language: item.language,
-                    isChecked: item.isChecked,
-                    translations: item.translations,
-                    modifiedBy: item.modifiedBy,
-                    modified: new Date()
-                },
-            }, {
+                _id: id
+            }, data, {
                 new: true
             });
         } catch (error) {
-            logging.error(`Failed to update item with id "${item._id}"`)
+            logging.error(`Failed to update item with id "${id}"`)
             logging.error(error);
 
             throw error;
         }
 
         if (!updatedItem) {
-            throw new Error(`Failed to get updated item with id "${item._id}"`)
+            throw new Error(`Failed to get updated item with id "${id}"`)
         }
 
-        logging.info(`Item "${item._id}" has been succesfully updated`);
+        logging.info(`Item "${id}" has been succesfully updated`);
 
         return updatedItem;
     }

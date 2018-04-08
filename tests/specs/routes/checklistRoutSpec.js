@@ -5,7 +5,7 @@ const UserController = require('../../../src/controllers/user');
 
 describe('Web Api testing for checklist routes', () => {
 
-    beforeAll(async(done) => {
+    beforeAll(async() => {
         const userController = new UserController();
 
         this.baseUrl = `${config.get('protocol')}://${config.get('host')}:${config.get('port')}${config.get('baseUrl')}`;
@@ -28,8 +28,6 @@ describe('Web Api testing for checklist routes', () => {
             text: 'молоко',
             isChecked: false
         }
-
-        done();
     });
 
     it('Should add new checklist', (done) => {

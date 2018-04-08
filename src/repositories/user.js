@@ -143,30 +143,22 @@ module.exports = class UserRepository {
      * Method that updates user data in database
      * 
      * @async
-     * @param {Object} user
-     * @param {string} user.password
-     * @param {string} user.username
-     * @param {?Date} user.modified
-     * @param {string[]} user.languages
-     * @param {?ObjectId[]} user.checklists
+     * @param {Object} data
+     * @param {?string} data.password
+     * @param {?string} data.username
+     * @param {?Date} data.modified
+     * @param {?string[]} data.languages
+     * @param {?ObjectId[]} data.checklists
      * @returns {Promise <Query>}
      * @memberof UserRepository
      */
-    async update(user) {
+    async update(id, data) {
         let updatedUser;
 
         try {
             updatedUser = await UserModel.findOneAndUpdate({
-                _id: user._id
-            }, {
-                $set: {
-                    username: user.username,
-                    password: user.password,
-                    checklists: user.checklists,
-                    languages: user.languages,
-                    modified: new Date()
-                }
-            }, {
+                _id: id
+            }, data, {
                 new: true
             }).populate({
                 path: 'checklists',
@@ -175,14 +167,14 @@ module.exports = class UserRepository {
                 }
             });
         } catch (error) {
-            logging.error(`Failed to update user with id "${user._id}" and username ${user.username}`)
+            logging.error(`Failed to update user with id "${data._id}" and username ${data.username}`)
             logging.error(error);
 
             throw error;
         }
 
         if (!updatedUser) {
-            return new Error(`Failed to get updated user with id "${user._id}"`)
+            return new Error(`Failed to get updated user with id "${id}"`)
         }
 
         logging.info(`User with username ${updatedUser.username} has been succesfully updated`);

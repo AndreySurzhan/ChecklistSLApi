@@ -5,15 +5,6 @@ const ChecklistController = require('../controllers/checklist.js');
 module.exports = (router, authenticate) => {
     this.checklistController = new ChecklistController();
 
-    router.post('/checklists', authenticate, (req, res, next) => {
-        this.checklistController.getAllByUserId(req.user._id)
-            .then((checklists) => {
-                res.json(checklists);
-            }).catch((error) => {
-                next(error);
-            });
-    });
-
     router.post('/checklist', authenticate, (req, res, next) => {
         this.checklistController.addNewChecklist(req.body.checklist, req.user)
             .then((checklist) => {
@@ -24,12 +15,10 @@ module.exports = (router, authenticate) => {
     });
 
     router.patch('/checklist/:id', authenticate, (req, res, next) => {
-        req.body.checklist._id = req.params.id;
-
-        this.checklistController.updateChecklist(req.body.checklist, req.user)
+        this.checklistController.updateChecklist(req.params.id, req.body.checklist, req.user)
             .then((checklist) => {
                 res.json(checklist);
-            }).catch(() => {
+            }).catch((error) => {
                 next(error);
             });
     });

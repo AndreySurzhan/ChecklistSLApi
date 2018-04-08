@@ -23,7 +23,7 @@ module.exports = (router, authenticate) => {
     });
 
     router.patch('/user', authenticate, (req, res, next) => {
-        this.userController.updateUser(req.user)
+        this.userController.updateUser(req.user._id, req.body)
             .then((user) => {
                 res.json(user);
             }).catch((error) => {

@@ -18,7 +18,6 @@ module.exports = (app, router) => {
     });
 
     checklistRoutes(router, authenticate);
-    // itemRoutes.register(router, authenticate);
     userRoutes(router, authenticate);
 
     // All of our routes will be prefixed with '/api'

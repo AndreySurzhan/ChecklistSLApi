@@ -27,7 +27,7 @@ module.exports = class ChecklistRepository {
 
             await checklist.save();
 
-            createdChecklist = await ChecklistModel.findOne(checklist._id).populate('items');
+            createdChecklist = await ChecklistModel.findById(checklist._id).populate('items');
         } catch (error) {
             logging.error(`Failed to insert new checklist`);
             logging.error(error);
@@ -105,43 +105,34 @@ module.exports = class ChecklistRepository {
      * Method that updates existing chechlist into database
      * 
      * @async
-     * @param {Object} checklist
-     * @param {ObjectId} checklist._id
-     * @param {ObjectId[]} checklist.items
-     * @param {ObjectId[]} checklist.users
-     * @param {boolean} item.isActive
-     * @param {?Date} checklist.modified
-     * @param {ObjectId} checklist.modifiedBy
+     * @param {ObjectId} id
+     * @param {Object} data
+     * @param {ObjectId[]} data.items
+     * @param {ObjectId[]} data.users
+     * @param {boolean} data.isActive
+     * @param {?Date} data.modified
+     * @param {ObjectId} data.modifiedBy
      * @returns {Promise <Query>}
      * @memberof ChecklistRepository
      */
-    async update(checklist) {
+    async update(id, data) {
         let updatedChecklist = null;
 
         try {
             updatedChecklist = await ChecklistModel.findOneAndUpdate({
-                _id: checklist._id
-            }, {
-                $set: {
-                    name: checklist.name,
-                    items: checklist.items,
-                    users: checklist.users,
-                    isActive: checklist.isActive,
-                    modifiedBy: checklist.modifiedBy,
-                    modified: new Date()
-                }
-            }, {
+                _id: id
+            }, data, {
                 new: true
             }).populate('items');
         } catch (error) {
-            logging.error(`Failed to update checklist with id "${checklist._id}"`)
+            logging.error(`Failed to update checklist with id "${id}"`)
             logging.error(error);
 
             throw error;
         }
 
         if (!updatedChecklist) {
-            throw new Error(`Failed to get updated checklist with id "${checklist._id}"`)
+            throw new Error(`Failed to get updated checklist with id "${id}"`)
         }
 
         logging.info(`Checklist "${updatedChecklist._id}" has been succesfully updated`);

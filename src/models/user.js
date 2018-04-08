@@ -34,7 +34,8 @@ UserSchema = new Schema({
      */
     hashedPassword: {
         type: String,
-        required: true
+        required: true,
+        hideField: true
     },
 
     /**

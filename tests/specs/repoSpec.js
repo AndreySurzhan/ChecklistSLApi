@@ -43,8 +43,7 @@ describe('Integration testing for Repositories', () => {
             expect(user).toBeTruthy();
             expect(user.hasOwnProperty('password')).not.toBe(true)
 
-            this.user._id = user._id;
-            this.checklist.users.push(this.user._id)
+            this.userId = user._id;
             this.checklist.createdBy = this.user._id
             this.checklist.modifiedBy = this.user._id
             this.item.createdBy = this.user._id
@@ -52,7 +51,7 @@ describe('Integration testing for Repositories', () => {
         });
 
         it('should find existing user by id', async() => {
-            let user = await this.userRepo.findById(this.user._id);
+            let user = await this.userRepo.findById(this.userId);
 
             expect(user).toBeTruthy();
             expect(user.hasOwnProperty('password')).not.toBe(true)
@@ -63,7 +62,7 @@ describe('Integration testing for Repositories', () => {
             user.name = `test_updated@${new Date().getTime()}`;
             user.password = "654321";
 
-            user = await this.userRepo.update(user);
+            user = await this.userRepo.update(this.userId, user);
 
             expect(user).toBeTruthy();
             expect(user.hasOwnProperty('password')).not.toBe(true)
@@ -72,15 +71,16 @@ describe('Integration testing for Repositories', () => {
 
     describe('Integration testing for Checklist Repository', () => {
         it('should create new checklist', async() => {
+            this.checklist.users.push(this.userId);
+
             let checklist = await this.checklistRepo.insert(this.checklist);
 
             expect(checklist).toBeTruthy();
-            this.checklist._id = checklist._id;
-            this.item.checklist = checklist._id;
+            this.checklistId = checklist._id;
         });
 
         it('should find existing checklists by user id', async() => {
-            let checklists = await this.checklistRepo.findAll(this.user._id);
+            let checklists = await this.checklistRepo.findAll(this.userId);
 
             expect(checklists).toBeTruthy();
         });
@@ -90,8 +90,9 @@ describe('Integration testing for Repositories', () => {
 
             checklist.name = `Updated checklist name ${new Date().getTime()}`;
             checklist.isActive = true;
+            checklist.modifiedBy = this.userId;
 
-            checklist = await this.checklistRepo.update(checklist);
+            checklist = await this.checklistRepo.update(this.checklistId, checklist);
 
             expect(checklist).toBeTruthy();
         });
@@ -102,11 +103,11 @@ describe('Integration testing for Repositories', () => {
             let item = await this.itemRepo.insert(this.item);
 
             expect(item).toBeTruthy();
-            this.item._id = item._id;
+            this.itemId = item._id;
         });
 
         it('should find existing items by checklist id', async() => {
-            let items = await this.itemRepo.findAll(this.checklist._id);
+            let items = await this.itemRepo.findAll(this.checklistId);
 
             expect(items).toBeTruthy();
         });
@@ -117,7 +118,7 @@ describe('Integration testing for Repositories', () => {
             item.text = 'milk';
             item.isChecked = true;
 
-            item = await this.itemRepo.update(this.checklist._id, this.item._id, item);
+            item = await this.itemRepo.update(this.itemId, item);
 
             expect(item).toBeTruthy();
         });
@@ -132,7 +133,7 @@ describe('Integration testing for Repositories', () => {
                 createdBy: this.user._id
             })
 
-            item = await this.itemRepo.update(this.checklist._id, this.item._id, item);
+            item = await this.itemRepo.update(this.itemId, item);
 
             expect(item).toBeTruthy();
             expect(item.translations.length).toBe(1)
