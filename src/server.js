@@ -3,9 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const logging = require('./utils/logging');
 const passport = require('passport');
-const routes = require('../src/routes/routes');
 const session = require('express-session');
 
+//mongoose plugins
+const hideDocumentFieldsMongoosePlugin = require('./utils/mongoosePlugins/hideDocumentFields');
 
 const databaseHost = config.get(`database.host`);
 const databasePort = config.get(`database.port`);
@@ -13,6 +14,11 @@ const databaseName = config.get(`database.name`);
 const databaseUrl = `mongodb://${databaseHost}:${databasePort}/${databaseName}`;
 const appPort = config.get(`port`);
 const localClient = config.get('clients.local');
+
+let server;
+
+// register global mongoose plugins
+mongoose.plugin(hideDocumentFieldsMongoosePlugin);
 
 let app = express();
 
@@ -28,10 +34,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-let server = app.listen(appPort);
-logging.info(`The magic happens on port "${appPort}"`);
-
-routes(app, express.Router()); // load our routes and pass in our app and fully configured passport
+// load our routes and pass in our app and fully configured passport
+require('../src/routes/routes')(app, express.Router());
 
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
@@ -44,7 +48,10 @@ mongoose.connect(databaseUrl, {
         logging.error(`Error happened connecting to mogoseDB '${databaseUrl}'`);
     } else {
         logging.info(`Successfully connected to mongoDB '${databaseUrl}'`);
+
+        server = app.listen(appPort);
+        logging.info(`The magic happens on port "${appPort}"`);
+
+        module.exports = server;
     }
 });
-
-module.exports = server
