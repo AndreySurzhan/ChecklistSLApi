@@ -141,16 +141,15 @@ module.exports = class ItemRepository {
         return updatedItem;
     }
 
-    async delete(id, checklistId) {
+    async delete(id) {
         let deletedItem = null;
 
         try {
             deletedItem = await ItemModel.findOneAndRemove({
-                _id: id,
-                checklist: checklistId
+                _id: id
             });
         } catch (error) {
-            logging.error(`Failed to delete item by id "${id}" and checklistId "${checklistId}"`)
+            logging.error(`Failed to delete item by id "${id}"`)
             logging.error(error);
 
             throw error;

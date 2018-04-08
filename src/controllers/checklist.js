@@ -103,7 +103,7 @@ module.exports = class ChecklistController {
         let deletedItem;
 
         try {
-            deletedItem = await this.itemRepo.delete(itemId, id);
+            deletedItem = await this.itemRepo.delete(itemId);
             checklist = await this.findChecklistById(id);
 
             checklist.modifiedBy = user._id;
