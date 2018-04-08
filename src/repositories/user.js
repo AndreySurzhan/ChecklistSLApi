@@ -9,7 +9,7 @@ module.exports = class UserRepository {
      * @param {Object} user
      * @param {string} user.password
      * @param {string} user.username
-     * @param {string[]} user.languages
+     * @param {?string[]} user.languages
      * @param {?ObjectId[]} user.checklists
      * @returns {Promise <Query>}
      * @memberof UserRepository
@@ -122,14 +122,8 @@ module.exports = class UserRepository {
 
         try {
             existedUsers = await UserModel.find({
-                    checklists: checklistId
-                })
-                .populate({
-                    path: 'checklists',
-                    populate: {
-                        path: 'items'
-                    }
-                });
+                checklists: checklistId
+            });
         } catch (error) {
             logging.error(`Failed to find users by checklistid "${checklistId}" from database`);
             logging.error(error);
