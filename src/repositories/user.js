@@ -62,11 +62,11 @@ module.exports = class UserRepository {
             logging.error(`Failed to find user with id "${id}" from database`);
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!existedUser) {
-            return new Error(`User with id "${id}" doesn't exist`)
+            throw new Error(`User with id "${id}" doesn't exist`)
         }
 
         logging.info(`User has been successfully found by id "${id}"`);
@@ -98,11 +98,11 @@ module.exports = class UserRepository {
             logging.error(`Failed to find user with username "${username}" from database`);
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!existedUser) {
-            return new Error(`User with username "${username}" doesn't exist`)
+            throw new Error(`User with username "${username}" doesn't exist`)
         }
 
         logging.info(`User has been successfully found by username "${username}"`);
@@ -134,11 +134,11 @@ module.exports = class UserRepository {
             logging.error(`Failed to find users by checklistid "${checklistId}" from database`);
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!existedUsers) {
-            return new Error(`Users with checklist "${checklistId}" don't exist`)
+            throw new Error(`Users with checklist "${checklistId}" don't exist`)
         }
 
         logging.info(`Users has been successfully found by cehcklist id "${checklistId}"`);
@@ -184,7 +184,7 @@ module.exports = class UserRepository {
             logging.error(`Failed to update user with id "${user._id}" and username ${user.username}`)
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!updatedUser) {

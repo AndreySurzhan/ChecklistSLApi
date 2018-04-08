@@ -33,11 +33,11 @@ module.exports = class ItemRepository {
             logging.error('Failed to insert new item');
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!createdItem) {
-            return new Error('Failed to get item after it\'s been saved')
+            throw new Error('Failed to get item after it\'s been saved')
         }
 
         logging.info(`New item "${createdItem._id}" has been successfully created`);
@@ -63,11 +63,11 @@ module.exports = class ItemRepository {
             logging.error(`Failed to find all items by checklist id "${checklistId}" from database`);
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!existedItems) {
-            return new Error(`Items with checklist id "${checklistId}" don't exist`)
+            throw new Error(`Items with checklist id "${checklistId}" don't exist`)
         }
 
         logging.info(`All Items have been successfully found by checklist id "${checklistId}"`);
@@ -115,11 +115,11 @@ module.exports = class ItemRepository {
             logging.error(`Failed to update item with id "${item._id}"`)
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!updatedItem) {
-            return new Error(`Failed to get updated item with id "${item._id}"`)
+            throw new Error(`Failed to get updated item with id "${item._id}"`)
         }
 
         logging.info(`Item "${item._id}" has been succesfully updated`);
@@ -139,11 +139,11 @@ module.exports = class ItemRepository {
             logging.error(`Failed to delete item by id "${id}" and checklistId "${checklistId}"`)
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!deletedItem) {
-            return new Error(`Failed to get deleted item`)
+            throw new Error(`Failed to get deleted item`)
         }
 
         logging.info(`Item "${deletedItem._id}" has been succesfully deleted`);
@@ -164,11 +164,11 @@ module.exports = class ItemRepository {
             logging.error(`Failed to delete many items by ids "${ids}"`)
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!deletedItems) {
-            return new Error(`Failed to get deleted items`)
+            throw new Error(`Failed to get deleted items`)
         }
 
         logging.info(`Items "${ids}" have been succesfully deleted`);

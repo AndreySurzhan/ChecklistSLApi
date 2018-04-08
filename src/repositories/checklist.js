@@ -32,11 +32,11 @@ module.exports = class ChecklistRepository {
             logging.error(`Failed to insert new checklist`);
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!createdChecklist) {
-            return new Error('Failed to get checklist after it\'s been saved')
+            throw new Error('Failed to get checklist after it\'s been saved')
         }
 
         logging.info(`New checklist "${createdChecklist._id}" has been successfully created`);
@@ -60,11 +60,11 @@ module.exports = class ChecklistRepository {
             logging.error(`Failed to find checklist by id "${checklistId}" from database`);
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!existedChecklist) {
-            return new Error(`Checklist with id "${checklistId}" doesn't exist`)
+            throw new Error(`Checklist with id "${checklistId}" doesn't exist`)
         }
 
         logging.info(`Checklist has been successfully found by id "${checklistId}"`);
@@ -90,11 +90,11 @@ module.exports = class ChecklistRepository {
             logging.error(`Failed to find all checklists by user id "${userId}" from database`);
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!existedChecklists) {
-            return new Error(`Checklists with user id "${userId}" don't exist`)
+            throw new Error(`Checklists with user id "${userId}" don't exist`)
         }
 
         logging.info(`All checklists have been successfully found by user id "${userId}"`);
@@ -137,11 +137,11 @@ module.exports = class ChecklistRepository {
             logging.error(`Failed to update checklist with id "${checklist._id}"`)
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!updatedChecklist) {
-            return new Error(`Failed to get updated checklist with id "${checklist._id}"`)
+            throw new Error(`Failed to get updated checklist with id "${checklist._id}"`)
         }
 
         logging.info(`Checklist "${updatedChecklist._id}" has been succesfully updated`);
@@ -169,11 +169,11 @@ module.exports = class ChecklistRepository {
             logging.error(`Failed to delete checklist with id "${id}"`)
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!deletedChecklist) {
-            return new Error(`Failed to get deleted checklist with id "${id}"`)
+            throw new Error(`Failed to get deleted checklist with id "${id}"`)
         }
 
         logging.info(`Checklist "${deletedChecklist._id}" has been succesfully deleted`);

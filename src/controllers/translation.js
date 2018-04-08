@@ -18,7 +18,7 @@ module.exports = class Translate {
                 logging.error(`Failed to translate "${text}"`)
                 logging.error(error);
 
-                return error;
+                throw error;
             }
 
             translation.translation = response.text

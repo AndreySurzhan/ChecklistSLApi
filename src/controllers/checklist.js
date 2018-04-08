@@ -33,7 +33,7 @@ module.exports = class ChecklistController {
 
             await this.userController.updateUser(user);
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return newChecklist
@@ -45,7 +45,7 @@ module.exports = class ChecklistController {
         try {
             checklist = await this.checklistRepo.findbyId(id);
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return checklist;
@@ -57,7 +57,7 @@ module.exports = class ChecklistController {
         try {
             checklist = await this.checklistRepo.findAll(userId);
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return checklist;
@@ -84,7 +84,7 @@ module.exports = class ChecklistController {
 
             updatedChecklist = await this.checklistRepo.update(checklist);
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return addedItem;
@@ -109,7 +109,7 @@ module.exports = class ChecklistController {
 
             updatedChecklist = await this.checklistRepo.update(checklist);
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return updatedItem;
@@ -134,7 +134,7 @@ module.exports = class ChecklistController {
 
             updatedChecklist = await this.checklistRepo.update(checklist);
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return deletedItem;
@@ -148,7 +148,7 @@ module.exports = class ChecklistController {
 
             updatedChecklist = await this.checklistRepo.update(checklist);
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return updatedChecklist;
@@ -176,7 +176,7 @@ module.exports = class ChecklistController {
                 }
             }
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return deletedChecklist;

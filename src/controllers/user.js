@@ -12,7 +12,7 @@ module.exports = class UserController {
         try {
             newUser = await this.userRepo.insert(user);
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return newUser;
@@ -25,7 +25,7 @@ module.exports = class UserController {
             existingUser = await this.userRepo.findById(id);
 
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return existingUser;
@@ -38,7 +38,7 @@ module.exports = class UserController {
             existingUser = await this.userRepo.findByUsername(username);
 
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return existingUser;
@@ -51,7 +51,7 @@ module.exports = class UserController {
             existingUsers = await this.userRepo.findAllByChecklistId(checlistId);
 
         } catch (error) {
-            return error;
+            throw error;
         }
 
         return existingUsers;
