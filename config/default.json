@@ -2,7 +2,7 @@
     "port": 8080,
     "database": {
         "host": "localhost",
-        "name": "ChecklistSL",
+        "name": "ChecklistSLDb",
         "port": "27017"
     },
     "security": {
@@ -20,5 +20,8 @@
             "name": "ChecklistSLUi",
             "secret": "shouldbesomehashedvalue"
         }
+    },
+    "translation": {
+        "apiKey": "trnsl.1.1.20171205T160848Z.40acfb7112cde17a.f2a30cf37f048cfe8b859d205cd515aa4e775ff5"
     }
 }

@@ -4,8 +4,27 @@ Web service for ChecklistSL project
 
 # Installation 
 
-`npm install`
+1. Install project dependencies:
 
-Install nodemon:
+    `npm install`
 
-`npm install nodemon -g`
+2. Install nodemon:
+
+    `npm install nodemon -g`
+
+3. Install mongoDB
+
+4. Created `ChecklistSLDb` database
+
+# Launch server
+
+Dev
+
+`npm run dev`
+
+Prod
+
+`npm start`
+
+> [Powered by Yandex.Translate](http://translate.yandex.com/)
+
