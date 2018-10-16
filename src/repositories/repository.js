@@ -1,11 +1,11 @@
 const logging = require('../utils/logging');
-const UserModel = require('../models/user');
 
 module.exports = class Repository {
 
-    constructor(model) {
+    constructor(model, populateString=null) {
         this.model = model;
         this.collectionName = this.model.collection.collectionName;
+        this.populateString = populateString;
     }
 
     /**
@@ -55,7 +55,11 @@ module.exports = class Repository {
         let doc;
 
         try {
-            doc = await UserModel.findById(id);
+            if (this.populateString) {
+                doc = await this.model.findById(id).populate(this.populateString);
+            } else {
+                doc = await this.model.findById(id);
+            }
         } catch (error) {
             logging.error(`Failed to find document with id "${id}" from "${this.collectionName}" collection`);
             logging.error(error);
@@ -84,11 +88,13 @@ module.exports = class Repository {
         let doc;
 
         try {
-            doc = await this.model.findOneAndUpdate({
+            await this.model.findOneAndUpdate({
                 _id: id
             }, data, {
                 new: true
             });
+            
+            doc = await this.findById(id);
         } catch (error) {
             logging.error(`Failed to update document with id "${id}" in "${this.collectionName}" collection`)
             logging.error(error);

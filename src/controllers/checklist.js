@@ -41,7 +41,7 @@ module.exports = class ChecklistController {
         let checklist;
 
         try {
-            checklist = await this.checklistRepo.findbyId(id);
+            checklist = await this.checklistRepo.findById(id);
         } catch (error) {
             throw error;
         }
