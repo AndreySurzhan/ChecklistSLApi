@@ -1,4 +1,3 @@
-const config = require('config');
 const UserController = require('../controllers/user.js');
 
 
@@ -23,7 +22,7 @@ module.exports = (router, authenticate) => {
     });
 
     router.patch('/user', authenticate, (req, res, next) => {
-        this.userController.updateUser(req.user._id, req.body)
+        this.userController.updateUser(req.user._id, req.body.user)
             .then((user) => {
                 res.json(user);
             }).catch((error) => {

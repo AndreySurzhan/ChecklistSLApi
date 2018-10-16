@@ -1,0 +1,484 @@
+{
+	"info": {
+		"_postman_id": "7083da02-38c5-406e-84b0-2ef5ac73ece2",
+		"name": "ChecklistSLApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "checklists",
+			"item": [
+				{
+					"name": "POST (Add new Checklist)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "Name",
+									"value": "Checklist - {{$timestamp}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/checklist",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checklist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET (All checklists)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{baseUrl}}/checklist",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checklist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH (Update checklist)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "Name",
+									"value": "New Checklist name again - {{$timestamp}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/checklist/{{checklistId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checklist",
+								"{{checklistId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET (Checklist by Id)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{baseUrl}}/checklist/{{checklistId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checklist",
+								"{{checklistId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE (Checklist by Id)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{baseUrl}}/checklist/{{checklistId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checklist",
+								"{{checklistId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "items",
+			"item": [
+				{
+					"name": "PUT (Insert Item)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Name\" : \"Itema name - {{$randomInt}} / time - {{$timestamp}}\",\n\t\"Translations\": [\n\t\t{\n\t\t\t\"Language\": \"Russian\",\n\t\t\t\"TranslationString\": \"сало\"\n\t\t},\n\t\t{\n\t\t\t\"Language\": \"English\",\n\t\t\t\"TranslationString\": \"fat\"\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/checklist/{{checklistId}}/item",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checklist",
+								"{{checklistId}}",
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET (Items by ckeclist Id)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{baseUrl}}/checklist/{{checklistId}}/item",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checklist",
+								"{{checklistId}}",
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH (Update Item by Id)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Name\" : \"Milk - {{$randomInt}} / time - {{$timestamp}}\",\n\t\"Translations\": [\n\t\t{\n\t\t\t\"Language\": \"Russian\",\n\t\t\t\"TranslationString\": \"молоко\"\n\t\t},\n\t\t{\n\t\t\t\"Language\": \"English\",\n\t\t\t\"TranslationString\": \"milk\"\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/checklist/{{checklistId}}/item/{{itemId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checklist",
+								"{{checklistId}}",
+								"item",
+								"{{itemId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE (Item by Id)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{baseUrl}}/checklist/{{checklistId}}/item/{{itemId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checklist",
+								"{{checklistId}}",
+								"item",
+								"{{itemId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "translation",
+			"item": [
+				{
+					"name": "TRANSLATE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "text",
+									"value": "Привет Мир как дела",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://translate.yandex.net/api/v1.5/tr.json/translate?lang=ru-en&key={{translationKey}}",
+							"protocol": "https",
+							"host": [
+								"translate",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"api",
+								"v1.5",
+								"tr.json",
+								"translate"
+							],
+							"query": [
+								{
+									"key": "lang",
+									"value": "ru-en"
+								},
+								{
+									"key": "key",
+									"value": "{{translationKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DETECT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "text",
+									"value": "Привет Мир",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://translate.yandex.net/api/v1.5/tr.json/detect?key={{translationKey}}",
+							"protocol": "https",
+							"host": [
+								"translate",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"api",
+								"v1.5",
+								"tr.json",
+								"detect"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{translationKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "POST (Creat new user)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5477a51b-9bfa-47cf-987f-4306cd6d4fba",
+								"exec": [
+									"let newUser = {",
+									"    username: `test_user_${new Date().getTime()}`,",
+									"    password: '123456'",
+									"}",
+									"",
+									"postman.setEnvironmentVariable(\"username\", newUser.username);",
+									"postman.setEnvironmentVariable(\"password\", newUser.password);",
+									"postman.setEnvironmentVariable(\"newUserReq\", JSON.stringify(newUser));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{newUserReq}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registration?",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registration"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "new_checklistSL-{{timestamp}}@test.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST (Get User)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{newUserReq}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH (Updated User)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0f916602-77c4-4dcf-abf2-ae954ffb3f9f",
+								"exec": [
+									"var existingUser = JSON.parse(environment[\"newUserReq\"]);",
+									"existingUser.user = {}",
+									"existingUser.user.username = `changed_user_${new Date().getTime()}`",
+									"existingUser.user.password = existingUser.password;",
+									"postman.setEnvironmentVariable(\"changedUserReq\", JSON.stringify(existingUser));",
+									"postman.setEnvironmentVariable(\"newUserReq\", JSON.stringify(existingUser.user));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{changedUserReq}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
