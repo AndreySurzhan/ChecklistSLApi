@@ -12,10 +12,10 @@ jasmine.clearReporters();
 jasmine.addReporter(new SpecReporter());
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
-jasmine.onComplete(function(passed) {
+jasmine.onComplete((passed) => {
     mongoose.disconnect(() => {
         logging.info('Closed out remaining database connections');
-        server.close(function() {
+        server.close(() => {
             logging.info('Closed out remaining web server connections');
             if (passed) {
                 process.exit();
@@ -25,6 +25,5 @@ jasmine.onComplete(function(passed) {
         });
     });
 });
-
 
 jasmine.execute();

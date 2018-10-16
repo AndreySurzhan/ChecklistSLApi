@@ -40,8 +40,13 @@ require('../src/routes/routes')(app, express.Router());
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 
+//To fix all deprecation warnings
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 mongoose.connect(databaseUrl, {
-    autoReconnect: true
+    autoReconnect: true,
+    useNewUrlParser: true
 }, (error) => {
     if (error) {
         logging.error(error);

@@ -16,7 +16,11 @@ Web service for ChecklistSL project
 
 4. Created `ChecklistSLDb` database
 
-# Launch server
+# Launch Api
+
+MongoDB
+
+`mongod`
 
 Dev
 
