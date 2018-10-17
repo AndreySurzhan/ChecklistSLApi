@@ -10,23 +10,48 @@
 			"item": [
 				{
 					"name": "POST (Add new Checklist)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "67a4515e-f84a-43f3-a2b6-3c0ba5d659ce",
+								"exec": [
+									"let checklistReq = JSON.parse(environment[\"userReq\"]);",
+									"checklistReq.checklist = {",
+									"    name: `checklist_test_${new Date().getTime()}`",
+									"};",
+									"",
+									"postman.setEnvironmentVariable(\"checklistReq\", JSON.stringify(checklistReq));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "f651d128-0fd5-44b6-a2e2-f2e6ad712d53",
+								"exec": [
+									"let res = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"checklistId\", res._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded"
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "Name",
-									"value": "Checklist - {{$timestamp}}",
-									"type": "text"
-								}
-							]
+							"mode": "raw",
+							"raw": "{{checklistReq}}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/checklist",
@@ -136,6 +161,36 @@
 			"item": [
 				{
 					"name": "PUT (Insert Item)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "10b8b81d-5a90-4e40-9b7a-659631638932",
+								"exec": [
+									"let itemReq = JSON.parse(environment[\"userReq\"]);",
+									"itemReq.item = {",
+									"    text: \"вода в бутылках\",",
+									"    isChecked: false",
+									"};",
+									"",
+									"postman.setEnvironmentVariable(\"itemReq\", JSON.stringify(itemReq));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e37f1662-3f74-40b5-8514-b99900fa8da2",
+								"exec": [
+									"let res = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"itemId\", res._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -146,7 +201,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"Name\" : \"Itema name - {{$randomInt}} / time - {{$timestamp}}\",\n\t\"Translations\": [\n\t\t{\n\t\t\t\"Language\": \"Russian\",\n\t\t\t\"TranslationString\": \"сало\"\n\t\t},\n\t\t{\n\t\t\t\"Language\": \"English\",\n\t\t\t\"TranslationString\": \"fat\"\n\t\t}\n\t]\n}"
+							"raw": "{{itemReq}}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/checklist/{{checklistId}}/item",
@@ -344,12 +399,16 @@
 								"exec": [
 									"let newUser = {",
 									"    username: `test_user_${new Date().getTime()}`,",
-									"    password: '123456'",
+									"    password: '123456',",
+									"    languages: [",
+									"        'en',",
+									"        'ru',",
+									"        'es',",
+									"        'de'",
+									"    ]",
 									"}",
 									"",
-									"postman.setEnvironmentVariable(\"username\", newUser.username);",
-									"postman.setEnvironmentVariable(\"password\", newUser.password);",
-									"postman.setEnvironmentVariable(\"newUserReq\", JSON.stringify(newUser));"
+									"postman.setEnvironmentVariable(\"userReq\", JSON.stringify(newUser));"
 								],
 								"type": "text/javascript"
 							}
@@ -367,7 +426,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{{newUserReq}}"
+							"raw": "{{userReq}}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/registration?",
@@ -407,7 +466,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{{newUserReq}}"
+							"raw": "{{userReq}}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/user",
@@ -441,12 +500,12 @@
 							"script": {
 								"id": "0f916602-77c4-4dcf-abf2-ae954ffb3f9f",
 								"exec": [
-									"var existingUser = JSON.parse(environment[\"newUserReq\"]);",
+									"var existingUser = JSON.parse(environment[\"userReq\"]);",
 									"existingUser.user = {}",
 									"existingUser.user.username = `changed_user_${new Date().getTime()}`",
 									"existingUser.user.password = existingUser.password;",
 									"postman.setEnvironmentVariable(\"changedUserReq\", JSON.stringify(existingUser));",
-									"postman.setEnvironmentVariable(\"newUserReq\", JSON.stringify(existingUser.user));"
+									"postman.setEnvironmentVariable(\"userReq\", JSON.stringify(existingUser.user));"
 								],
 								"type": "text/javascript"
 							}
