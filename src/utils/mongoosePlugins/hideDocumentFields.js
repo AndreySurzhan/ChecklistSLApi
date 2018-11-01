@@ -7,17 +7,19 @@ let hideDocumentFields = (schema) => {
      * @param {Object} ret - The plain object representation which has been converted
      * @param {Object} options - The options in use (either schema options or the options passed inline)
      *
-     * @returns ret
+     * @returns {Object}
      */
     schema.set('toJSON', {
-        transform: function(doc, ret, options) {
+        transform: (doc, ret, options) => {
+            let output = doc.toObject()
+            
             Object.keys(schema.obj).forEach((key) => {
                 if (schema.obj[key].hideField) {
-                    delete ret[key]
+                    delete output[key]
                 }
             });
 
-            return ret;
+            return output;
         }
     });
 };

@@ -1,5 +1,7 @@
 /// Libs
 const bcrypt = require('bcrypt-nodejs');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const logging = require('../utils/logging');
 /// Models
@@ -82,28 +84,6 @@ UserSchema = new Schema({
 });
 
 /**
- * @function
- * @name generateHash
- * @memberof models/UserSchema
- *
- * @param {string} password
- *
- * @returns {string} hassedPass
- */
-UserSchema.methods.generateHash = function(password) {
-    let hashedPassword;
-
-    try {
-        hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-    } catch (error) {
-        logging.error('Failed to hash password');
-        logging.error(error);
-        hashedPassword = null;
-    }
-    return hashedPassword;
-};
-
-/**
  * @name password
  * @type String
  * @memberof models/UserSchema
@@ -119,6 +99,39 @@ UserSchema.virtual('password')
     });
 
 /**
+ * @name token
+ * @type String
+ * @memberof models/UserSchema
+ * @virtual
+ */
+UserSchema.virtual('token')
+    .get(function() {
+        return this.generateJWT();
+    });
+
+/**
+ * @function
+ * @name generateHash
+ * @memberof models/UserSchema
+ *
+ * @param {string} password
+ *
+ * @returns {string} hassedPass
+ */
+UserSchema.methods.generateHash = (password) => {
+    let hashedPassword;
+
+    try {
+        hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+    } catch (error) {
+        logging.error('Failed to hash password');
+        logging.error(error);
+        hashedPassword = null;
+    }
+    return hashedPassword;
+};
+
+/**
  * @function
  * @name validPassword
  * @memberof models/UserSchema
@@ -127,7 +140,7 @@ UserSchema.virtual('password')
  *
  * @returns {boolean}
  */
-UserSchema.methods.validPassword = function(password) {
+UserSchema.methods.validPassword = (password) => {
     let isValid;
 
     try {
@@ -139,6 +152,24 @@ UserSchema.methods.validPassword = function(password) {
     }
     return isValid;
 };
+
+/**
+ * @function
+ * @name generateJWT
+ * @memberof models/UserSchema
+ *
+ * @returns {string}
+ */
+UserSchema.methods.generateJWT = () => {
+    return jwt.sign({
+      username: this.username,
+      id: this._id,
+    }, config.get('clients.webApi.secret'), {
+        expiresIn: config.get('security.tokenLife')
+    });
+}
+
+UserSchema.set('toObject', { virtuals: true });
 
 if (mongoose.models.User) {
     User = mongoose.model('User');

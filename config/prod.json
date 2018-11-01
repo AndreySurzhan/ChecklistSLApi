@@ -8,9 +8,13 @@
     "protocol": "http",
     "loggingLevel": "info",
     "clients": {
-        "local": {
+        "webApi": {
+            "name": "ChecklistSLApi",
+            "secret": "api-shouldbesomehashedvalue"
+        },
+        "webUi": {
             "name": "ChecklistSLUi",
-            "secret": ""
+            "secret": "ui-shouldbesomehashedvalue"
         }
     }
 }

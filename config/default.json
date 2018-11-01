@@ -16,9 +16,13 @@
     },
     "loggingLevel": "debug",
     "clients": {
-        "local": {
+        "webApi": {
+            "name": "ChecklistSLApi",
+            "secret": "api-shouldbesomehashedvalue"
+        },
+        "webUi": {
             "name": "ChecklistSLUi",
-            "secret": "shouldbesomehashedvalue"
+            "secret": "ui-shouldbesomehashedvalue"
         }
     },
     "translation": {

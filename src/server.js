@@ -13,7 +13,7 @@ const databasePort = config.get(`database.port`);
 const databaseName = config.get(`database.name`);
 const databaseUrl = `mongodb://${databaseHost}:${databasePort}/${databaseName}`;
 const appPort = config.get(`port`);
-const localClient = config.get('clients.local');
+const webApiClient = config.get('clients.webApi');
 
 let server;
 
@@ -26,8 +26,8 @@ let app = express();
 app.use(express.json());
 
 app.use(session({
-    name: localClient.name,
-    secret: localClient.secret,
+    name: webApiClient.name,
+    secret: webApiClient.secret,
     resave: true,
     saveUninitialized: true
 }));
