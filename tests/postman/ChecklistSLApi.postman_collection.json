@@ -16,8 +16,7 @@
 							"script": {
 								"id": "67a4515e-f84a-43f3-a2b6-3c0ba5d659ce",
 								"exec": [
-									"let checklistReq = JSON.parse(environment[\"userReq\"]);",
-									"checklistReq.checklist = {",
+									"checklistReq = {",
 									"    name: `checklist_test_${new Date().getTime()}`",
 									"};",
 									"",
@@ -40,6 +39,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -68,16 +77,27 @@
 				{
 					"name": "GET (All checklists)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "{{baseUrl}}/checklist",
+							"raw": "{{baseUrl}}/checklist/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"checklist"
+								"checklist",
+								"{{userId}}"
 							]
 						}
 					},
@@ -86,11 +106,23 @@
 				{
 					"name": "PATCH (Update checklist)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded"
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -119,6 +151,16 @@
 				{
 					"name": "GET (Checklist by Id)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {},
@@ -138,6 +180,16 @@
 				{
 					"name": "DELETE (Checklist by Id)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {},
@@ -167,8 +219,7 @@
 							"script": {
 								"id": "10b8b81d-5a90-4e40-9b7a-659631638932",
 								"exec": [
-									"let itemReq = JSON.parse(environment[\"userReq\"]);",
-									"itemReq.item = {",
+									"let itemReq = {",
 									"    text: \"вода в бутылках\",",
 									"    isChecked: false",
 									"};",
@@ -192,6 +243,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -220,6 +281,16 @@
 				{
 					"name": "GET (Items by ckeclist Id)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {},
@@ -240,6 +311,16 @@
 				{
 					"name": "PATCH (Update Item by Id)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [
 							{
@@ -269,6 +350,16 @@
 				{
 					"name": "DELETE (Item by Id)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {},
@@ -412,6 +503,18 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1a9c276-a074-4edb-a132-bb35caa9d7c0",
+								"exec": [
+									"let res = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"userId\", res._id);",
+									"postman.setEnvironmentVariable(\"token\", res.token);"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -453,7 +556,20 @@
 					"response": []
 				},
 				{
-					"name": "POST (Get User)",
+					"name": "POST (Login)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "41e33c10-55b6-40bf-87c9-a91b0119ec1b",
+								"exec": [
+									"let res = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", res);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -469,12 +585,12 @@
 							"raw": "{{userReq}}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user",
+							"raw": "{{baseUrl}}/login",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"user"
+								"login"
 							],
 							"query": [
 								{
@@ -500,18 +616,29 @@
 							"script": {
 								"id": "0f916602-77c4-4dcf-abf2-ae954ffb3f9f",
 								"exec": [
-									"var existingUser = JSON.parse(environment[\"userReq\"]);",
-									"existingUser.user = {}",
-									"existingUser.user.username = `changed_user_${new Date().getTime()}`",
-									"existingUser.user.password = existingUser.password;",
-									"postman.setEnvironmentVariable(\"changedUserReq\", JSON.stringify(existingUser));",
-									"postman.setEnvironmentVariable(\"userReq\", JSON.stringify(existingUser.user));"
+									"let changedUserReq = {};",
+									"changedUserReq.username = `changed_user_${new Date().getTime()}`;",
+									"changedUserReq.languages = [",
+									"    'en',",
+									"    'ru',",
+									"];",
+									"postman.setEnvironmentVariable(\"changedUserReq\", JSON.stringify(changedUserReq));"
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [
 							{
@@ -532,6 +659,38 @@
 							],
 							"path": [
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET (Get user by Id)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"{{userId}}"
 							]
 						}
 					},

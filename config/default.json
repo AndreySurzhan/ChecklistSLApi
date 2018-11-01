@@ -6,7 +6,7 @@
         "port": "27017"
     },
     "security": {
-        "tokenLife": 3600
+        "tokenLife": "12h"
     },
     "host": "localhost",
     "protocol": "http",

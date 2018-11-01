@@ -140,7 +140,7 @@ UserSchema.methods.generateHash = (password) => {
  *
  * @returns {boolean}
  */
-UserSchema.methods.validPassword = (password) => {
+UserSchema.methods.validPassword = function(password) {
     let isValid;
 
     try {
@@ -160,10 +160,12 @@ UserSchema.methods.validPassword = (password) => {
  *
  * @returns {string}
  */
-UserSchema.methods.generateJWT = () => {
+UserSchema.methods.generateJWT = function() {
+    let that = this;
+
     return jwt.sign({
-      username: this.username,
-      id: this._id,
+      username: that.username,
+      id: that._id,
     }, config.get('clients.webApi.secret'), {
         expiresIn: config.get('security.tokenLife')
     });

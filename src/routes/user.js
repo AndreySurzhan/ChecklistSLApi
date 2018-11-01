@@ -1,7 +1,7 @@
 const UserController = require('../controllers/user.js');
 
 
-module.exports = (router, authenticate) => {
+module.exports = (router, authenticate, authenticateWithPassword) => {
     this.userController = new UserController();
 
     router.post('/registration', (req, res, next) => {
@@ -12,8 +12,12 @@ module.exports = (router, authenticate) => {
         });
     });
 
-    router.post('/user', authenticate, (req, res, next) => {
-        this.userController.getUserById(req.user._id)
+    router.post('/login', authenticateWithPassword, (req, res, next) => {
+        res.json(req.user.token);
+    });
+
+    router.patch('/user', authenticate, (req, res, next) => {
+        this.userController.updateUser(req.user._id, req.body)
             .then((user) => {
                 res.json(user);
             }).catch((error) => {
@@ -21,8 +25,8 @@ module.exports = (router, authenticate) => {
             });
     });
 
-    router.patch('/user', authenticate, (req, res, next) => {
-        this.userController.updateUser(req.user._id, req.body.user)
+    router.get('/user/:userId', authenticate, (req, res, next) => {
+        this.userController.getUserById(req.params.userId)
             .then((user) => {
                 res.json(user);
             }).catch((error) => {

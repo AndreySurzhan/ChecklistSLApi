@@ -1,6 +1,10 @@
+const config = require('config');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const UserModel = require('../models/user');
+const passportJWT = require("passport-jwt");
+const JWTStrategy = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -10,7 +14,7 @@ passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
-module.exports = passport.use(new LocalStrategy(
+passport.use(new LocalStrategy(
     (username, password, done) => {
         UserModel.findOne({
             username: username
@@ -35,3 +39,25 @@ module.exports = passport.use(new LocalStrategy(
         });
     }
 ));
+
+let pass = passport.use(new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        secretOrKey: config.get('clients.webApi.secret')
+    },
+    (jwtPayload, done) => {
+        return UserModel.findById(jwtPayload.id)
+            .then(user => {
+                if (!user) {
+                    return done(null, false, {
+                        message: `Cannot find user with id "${jwtPayload.id}"`
+                    });
+                }
+
+                return done(null, user);
+            })
+            .catch(err => {
+                return done(err);
+            });
+    }));
+
+module.exports = pass;

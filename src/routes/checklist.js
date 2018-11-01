@@ -6,7 +6,7 @@ module.exports = (router, authenticate) => {
     this.checklistController = new ChecklistController();
 
     router.post('/checklist', authenticate, (req, res, next) => {
-        this.checklistController.addNewChecklist(req.body.checklist, req.user)
+        this.checklistController.addNewChecklist(req.body, req.user)
             .then((checklist) => {
                 res.json(checklist);
             }).catch((error) => {
@@ -15,7 +15,7 @@ module.exports = (router, authenticate) => {
     });
 
     router.patch('/checklist/:id', authenticate, (req, res, next) => {
-        this.checklistController.updateChecklist(req.params.id, req.body.checklist, req.user)
+        this.checklistController.updateChecklist(req.params.id, req.body, req.user)
             .then((checklist) => {
                 res.json(checklist);
             }).catch((error) => {
@@ -24,7 +24,7 @@ module.exports = (router, authenticate) => {
     });
 
     router.put('/checklist/:id/item', authenticate, (req, res, next) => {
-        this.checklistController.addItemToChecklist(req.params.id, req.body.item, req.user)
+        this.checklistController.addItemToChecklist(req.params.id, req.body, req.user)
             .then((item) => {
                 res.json(item);
             }).catch((error) => {
@@ -33,7 +33,7 @@ module.exports = (router, authenticate) => {
     });
 
     router.patch('/checklist/:id/item/:itemId', authenticate, (req, res, next) => {
-        this.checklistController.updateItemInChecklist(req.params.id, req.params.itemId, req.body.item, req.user)
+        this.checklistController.updateItemInChecklist(req.params.id, req.params.itemId, req.body, req.user)
             .then((item) => {
                 res.json(item);
             }).catch((error) => {
