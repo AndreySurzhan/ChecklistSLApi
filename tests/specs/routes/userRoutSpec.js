@@ -42,8 +42,8 @@ describe('Web Api testing for user routes', () => {
         });
     });
 
-    it('Should get user', (done) => {
-        let resource = '/user'
+    it('Should login user and return auth token', (done) => {
+        let resource = '/login'
 
         request.post(this.baseUrl + resource, {
             json: this.user

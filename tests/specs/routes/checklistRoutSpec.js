@@ -27,20 +27,18 @@ describe('Web Api testing for checklist routes', () => {
         this.item = {
             text: 'молоко',
             isChecked: false
-        }
+        };
+        this.header = {
+            'Authorization': `Bearer ${this.addedUser.token}`
+        };
     });
 
     it('Should add new checklist', (done) => {
         const resource = '/checklist';
 
-        let requestBody = {
-            checklist: this.checklist,
-            password: this.user.password,
-            username: this.addedUser.username
-        };
-
         request.post(this.baseUrl + resource, {
-            json: requestBody
+            json: this.checklist,
+            headers: this.header
         }, (error, response, body) => {
             expect(error).toBe(null);
             expect(response.statusCode).toBe(200);
@@ -59,14 +57,9 @@ describe('Web Api testing for checklist routes', () => {
 
         this.checklist.name = `New checklist name ${new Date()}`
 
-        let requestBody = {
-            checklist: this.checklist,
-            password: this.user.password,
-            username: this.addedUser.username
-        };
-
         request.patch(this.baseUrl + resource, {
-            json: requestBody
+            json: this.checklist,
+            headers: this.header
         }, (error, response, body) => {
             expect(error).toBe(null);
             expect(response.statusCode).toBe(200);
@@ -83,14 +76,9 @@ describe('Web Api testing for checklist routes', () => {
     it('Should add new item to checklist', (done) => {
         const resource = `/checklist/${this.checklistId}/item`;
 
-        let requestBody = {
-            item: this.item,
-            password: this.user.password,
-            username: this.addedUser.username
-        }
-
         request.put(this.baseUrl + resource, {
-            json: requestBody
+            json: this.item,
+            headers: this.header
         }, (error, response, body) => {
             expect(error).toBe(null);
             expect(response.statusCode).toBe(200);
@@ -109,14 +97,9 @@ describe('Web Api testing for checklist routes', () => {
 
         this.item.text = 'buy olive oil'
 
-        let requestBody = {
-            item: this.item,
-            password: this.user.password,
-            username: this.addedUser.username
-        }
-
         request.patch(this.baseUrl + resource, {
-            json: requestBody
+            json: this.item,
+            headers: this.header
         }, (error, response, body) => {
             expect(error).toBe(null);
             expect(response.statusCode).toBe(200);
@@ -133,20 +116,12 @@ describe('Web Api testing for checklist routes', () => {
     it('Should delete existing item from checklist', (done) => {
         const resource = `/checklist/${this.checklistId}/item/${this.itemId}`;
 
-        let requestBody = {
-            password: this.user.password,
-            username: this.addedUser.username
-        }
         request.delete(this.baseUrl + resource, {
-            json: requestBody
+            headers: this.header
         }, (error, response, body) => {
             expect(error).toBe(null);
             expect(response.statusCode).toBe(200);
             expect(body).toBeTruthy();
-            expect(body._id).toBeTruthy();
-
-            this.itemId = body._id;
-            this.item = body;
 
             done();
         });
@@ -155,20 +130,12 @@ describe('Web Api testing for checklist routes', () => {
     it('Should delete checklist', (done) => {
         const resource = `/checklist/${this.checklistId}`;
 
-        let requestBody = {
-            password: this.user.password,
-            username: this.addedUser.username
-        }
         request.delete(this.baseUrl + resource, {
-            json: requestBody
+            headers: this.header
         }, (error, response, body) => {
             expect(error).toBe(null);
             expect(response.statusCode).toBe(200);
             expect(body).toBeTruthy();
-            expect(body._id).toBeTruthy();
-
-            this.checklistId = body._id;
-            this.checklist = body;
 
             done();
         });
