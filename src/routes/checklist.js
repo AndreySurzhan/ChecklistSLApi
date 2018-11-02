@@ -23,6 +23,24 @@ module.exports = (router, authenticate) => {
             });
     });
 
+    router.get('/checklist', authenticate, (req, res, next) => {
+        this.checklistController.findChecklistsByUserId(req.user._id)
+            .then((checklists) => {
+                res.json(checklists);
+            }).catch((error) => {
+                next(error);
+            });
+    });
+
+    router.get('/checklist/:id', authenticate, (req, res, next) => {
+        this.checklistController.findChecklistById(req.params.id)
+            .then((checklist) => {
+                res.json(checklist);
+            }).catch((error) => {
+                next(error);
+            });
+    });
+
     router.put('/checklist/:id/item', authenticate, (req, res, next) => {
         this.checklistController.addItemToChecklist(req.params.id, req.body, req.user)
             .then((item) => {

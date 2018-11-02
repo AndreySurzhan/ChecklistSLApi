@@ -52,6 +52,34 @@ describe('Web Api testing for checklist routes', () => {
         });
     });
 
+    it('Should get existing checklist', (done) => {
+        const resource = `/checklist/${this.checklistId}`;
+
+        request.get(this.baseUrl + resource, {
+            headers: this.header
+        }, (error, response, body) => {
+            expect(error).toBe(null);
+            expect(response.statusCode).toBe(200);
+            expect(body).toBeTruthy();
+
+            done();
+        });
+    });
+
+    it('Should get all existing checklists by user id', (done) => {
+        const resource = `/checklist`;
+
+        request.get(this.baseUrl + resource, {
+            headers: this.header
+        }, (error, response, body) => {
+            expect(error).toBe(null);
+            expect(response.statusCode).toBe(200);
+            expect(body).toBeTruthy();
+
+            done();
+        });
+    });
+
     it('Should update checklist', (done) => {
         const resource = `/checklist/${this.checklistId}`;
 

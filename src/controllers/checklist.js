@@ -49,6 +49,18 @@ module.exports = class ChecklistController {
         return checklist;
     }
 
+    async findChecklistsByUserId(id) {
+        let checklist;
+
+        try {
+            checklist = await this.checklistRepo.findAll(id);
+        } catch (error) {
+            throw error;
+        }
+
+        return checklist;
+    }
+
     async addItemToChecklist(id, item, user) {
         let addedItem;
         let checklist;

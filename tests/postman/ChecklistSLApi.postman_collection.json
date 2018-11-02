@@ -91,13 +91,12 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "{{baseUrl}}/checklist/{{userId}}",
+							"raw": "{{baseUrl}}/checklist",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"checklist",
-								"{{userId}}"
+								"checklist"
 							]
 						}
 					},
