@@ -1,6 +1,4 @@
-const config = require('config');
 const ChecklistController = require('../controllers/checklist.js');
-
 
 module.exports = (router, authenticate) => {
     this.checklistController = new ChecklistController();
