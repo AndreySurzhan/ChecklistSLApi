@@ -6,66 +6,49 @@ module.exports = class UserController {
         this.userRepo = new UserRepo();
     }
 
-    async addNewUser(user) {
-        let newUser;
+    async addNewUser(req, res, next) {
+        let user;
 
         try {
-            newUser = await this.userRepo.insert(user);
-        } catch (error) {
-            throw error;
-        }
+            user = await this.userRepo.insert(req.body);
 
-        return newUser;
+            res.json(user);
+        } catch (error) {
+            next(error);
+        }
     }
 
-    async getUserById(id) {
-        let existingUser;
+    async getUserById(req, res, next) {
+        let user;
 
         try {
-            existingUser = await this.userRepo.findById(id);
-
+            user = await this.userRepo.findById(req.params.userId);
+            
+            res.json(user);
         } catch (error) {
-            throw error;
+            next(error);
         }
-
-        return existingUser;
     }
 
-    async getUserByUsername(username) {
-        let existingUser;
+    async updateUser(req, res, next) {
+        let user;
 
         try {
-            existingUser = await this.userRepo.findByUsername(username);
+            user = await this.userRepo.update(req.user._id, req.body);
 
+            res.json(user);
         } catch (error) {
-            throw error;
+            next(error);
         }
-
-        return existingUser;
     }
 
-    async getAllUsersByChecklistId(checlistId) {
-        let existingUsers;
+    async loginUser(req, res, next) {
+        let user;
 
         try {
-            existingUsers = await this.userRepo.findAllByChecklistId(checlistId);
-
+            res.json(req.user.token);
         } catch (error) {
-            throw error;
+            next(error);
         }
-
-        return existingUsers;
-    }
-
-    async updateUser(id, data) {
-        let updateUser;
-
-        try {
-            updateUser = await this.userRepo.update(id, data);
-        } catch (error) {
-            return error;
-        }
-
-        return updateUser;
     }
 };
