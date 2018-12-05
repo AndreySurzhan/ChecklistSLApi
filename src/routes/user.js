@@ -1,13 +1,13 @@
 const UserController = require('../controllers/user.js');
 
 module.exports = (router, authenticate, authenticateWithPassword) => {
-    this.userController = new UserController();
+    let userController = new UserController();
 
-    router.post('/registration', this.userController.addNewUser)
+    router.post('/registration', userController.addNewUser.bind(userController));
 
-    router.post('/login', authenticateWithPassword, this.userController.loginUser)
+    router.post('/login', authenticateWithPassword, userController.loginUser.bind(userController));
 
-    router.patch('/user', authenticate, this.userController.updateUser)
+    router.patch('/user', authenticate, userController.updateUser.bind(userController));
 
-    router.get('/user/:userId', authenticate, this.userController.getUserById)
+    router.get('/user/:userId', authenticate, userController.getUserById.bind(userController));
 };

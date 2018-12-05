@@ -33,7 +33,7 @@ module.exports = class ChecklistController {
 
             await this.userRepo.update(user._id, userData);
 
-            res.json(newChecklist);
+            await res.json(newChecklist);
         } catch (error) {
             next(error);
         }
@@ -45,7 +45,7 @@ module.exports = class ChecklistController {
         try {
             checklist = await this.checklistRepo.findById(req.params.id);
             
-            res.json(checklist);
+            await res.json(checklist);
         } catch (error) {
             next(error);
         }
@@ -57,20 +57,21 @@ module.exports = class ChecklistController {
         try {
             checklists = await this.checklistRepo.findAll(req.user._id);
             
-            res.json(checklists);
+            await res.json(checklists);
         } catch (error) {
             next(error);
         }
     }
 
     async addItemToChecklist(req, res, next) {
-        let addedItem = req.body;
+        let addedItem;
         let checklist;
         let id = req.params.id;
+        let item = req.body; 
         let user = req.user;
 
         try {
-            checklist = await this.findChecklistById(id);
+            checklist = await this.checklistRepo.findById(req.params.id);
             user = await this.userRepo.findByUsername(user.username);
 
             item.checklist = id;
@@ -82,9 +83,9 @@ module.exports = class ChecklistController {
 
             checklist.items.push(addedItem._id);
 
-            await this.updateChecklist(id, checklist, user);
+            await await this.checklistRepo.update(id, checklist, user._id);
             
-            res.json(addedItem);
+            await res.json(addedItem);
         } catch (error) {
             next(error);
         }
@@ -94,12 +95,13 @@ module.exports = class ChecklistController {
         let checklist;
         let existingItem;
         let id = req.params.id;
+        let item = req.body;
         let itemId = req.params.itemId;
         let user = req.user;
         let updatedItem;
 
         try {
-            checklist = await this.findChecklistById(id);
+            checklist = await this.checklistRepo.findById(req.params.id);
             existingItem = await this.itemRepo.findById(itemId);
 
             if (item.text && item.text !== existingItem.text) {
@@ -109,9 +111,9 @@ module.exports = class ChecklistController {
 
             updatedItem = await this.itemRepo.update(itemId, item);
 
-            await this.updateChecklist(id, checklist, user);
+            await await this.checklistRepo.update(id, checklist, user._id);
             
-            res.json(updatedItem);
+            await res.json(updatedItem);
         } catch (error) {
             next(error);
         }
@@ -126,7 +128,7 @@ module.exports = class ChecklistController {
 
         try {
             deletedItem = await this.itemRepo.delete(itemId);
-            checklist = await this.findChecklistById(id);
+            checklist = await this.checklistRepo.findById(id);
 
             checklist.modifiedBy = user._id;
 
@@ -136,9 +138,9 @@ module.exports = class ChecklistController {
                 }
             }
 
-            await this.checklistRepo.update(checklist);
+            await this.checklistRepo.update(id, checklist, user._id);
             
-            res.json(deletedItem);
+            await res.json(deletedItem);
         } catch (error) {
             next(error);
         }
@@ -150,11 +152,9 @@ module.exports = class ChecklistController {
         let user = req.user;
 
         try {
-            checklist.modifiedBy = user._id;
-
-            checklist = await this.checklistRepo.update(id, checklist);
+            checklist = await this.checklistRepo.update(id, checklist, user._id);
             
-            res.json(checklist);
+            await res.json(checklist);
         } catch (error) {
             next(error);
         }
@@ -184,7 +184,7 @@ module.exports = class ChecklistController {
                 }
             }
             
-            res.json(checklist);
+            await res.json(checklist);
         } catch (error) {
             next(error);
         }

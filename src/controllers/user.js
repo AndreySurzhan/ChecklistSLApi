@@ -12,7 +12,7 @@ module.exports = class UserController {
         try {
             user = await this.userRepo.insert(req.body);
 
-            res.json(user);
+            await res.json(user);
         } catch (error) {
             next(error);
         }
@@ -24,7 +24,7 @@ module.exports = class UserController {
         try {
             user = await this.userRepo.findById(req.params.userId);
             
-            res.json(user);
+            await res.json(user);
         } catch (error) {
             next(error);
         }
@@ -36,7 +36,7 @@ module.exports = class UserController {
         try {
             user = await this.userRepo.update(req.user._id, req.body);
 
-            res.json(user);
+            await res.json(user);
         } catch (error) {
             next(error);
         }
@@ -46,7 +46,7 @@ module.exports = class UserController {
         let user;
 
         try {
-            res.json(req.user.token);
+            await res.json(req.user.token);
         } catch (error) {
             next(error);
         }

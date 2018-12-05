@@ -1,21 +1,21 @@
 const ChecklistController = require('../controllers/checklist.js');
 
 module.exports = (router, authenticate) => {
-    this.checklistController = new ChecklistController();
+    let checklistController = new ChecklistController();
 
-    router.post('/checklist', authenticate, this.checklistController.addNewChecklist)
+    router.post('/checklist', authenticate, checklistController.addNewChecklist.bind(checklistController));
 
-    router.patch('/checklist/:id', authenticate, this.checklistController.updateChecklist)
+    router.patch('/checklist/:id', authenticate, checklistController.updateChecklist.bind(checklistController));
 
-    router.get('/checklist', authenticate, this.checklistController.findChecklistsByUserId)
+    router.get('/checklist', authenticate, checklistController.findChecklistsByUserId.bind(checklistController));
 
-    router.get('/checklist/:id', authenticate, this.checklistController.findChecklistById)
+    router.get('/checklist/:id', authenticate, checklistController.findChecklistById.bind(checklistController));
 
-    router.put('/checklist/:id/item', authenticate, this.checklistController.addItemToChecklist)
+    router.put('/checklist/:id/item', authenticate, checklistController.addItemToChecklist.bind(checklistController));
 
-    router.patch('/checklist/:id/item/:itemId', authenticate, this.checklistController.updateItemInChecklist)
+    router.patch('/checklist/:id/item/:itemId', authenticate, checklistController.updateItemInChecklist.bind(checklistController));
 
-    router.delete('/checklist/:id/item/:itemId', authenticate, this.checklistController.deleteItemFromChecklist)
+    router.delete('/checklist/:id/item/:itemId', authenticate, checklistController.deleteItemFromChecklist.bind(checklistController));
 
-    router.delete('/checklist/:id', authenticate, this.checklistController.deleteChecklistById)
+    router.delete('/checklist/:id', authenticate, checklistController.deleteChecklistById.bind(checklistController));
 };

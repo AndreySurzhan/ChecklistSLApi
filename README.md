@@ -10,7 +10,7 @@ Web service for ChecklistSL project
 
 2. Install nodemon:
 
-    `npm install nodemon -g`
+    `npm install -g nodemon`
 
 3. Install mongoDB
 

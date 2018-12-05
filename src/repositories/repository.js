@@ -81,13 +81,16 @@ module.exports = class Repository {
      * @async
      * @param {string | ObjectId} id 
      * @param {Object} data
+     * @param {string | ObjectId} userId
      * @returns {Promise <Query>}
      * @memberof Repository
      */
-    async update(id, data) {
+    async update(id, data, userId) {
         let doc;
 
         try {
+            data.modifiedBy = userId;
+
             await this.model.findOneAndUpdate({
                 _id: id
             }, data, {
