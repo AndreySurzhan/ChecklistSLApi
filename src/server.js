@@ -12,7 +12,7 @@ const databaseHost = config.get(`database.host`);
 const databasePort = config.get(`database.port`);
 const databaseName = config.get(`database.name`);
 const databaseUrl = `mongodb://${databaseHost}:${databasePort}/${databaseName}`;
-const appPort = config.get(`port`);
+const appPort = process.env.PORT || config.get(`port`);
 const webApiClient = config.get('clients.webApi');
 
 let server;
