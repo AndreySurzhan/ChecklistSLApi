@@ -4,7 +4,7 @@
     "description": "Web api for CheckListSL application",
     "main": "src/server.js",
     "scripts": {
-        "start": "NODE_ENV='prod' node src/server.js",
+        "start": "NODE_ENV='heroku' node src/server.js",
         "dev": "nodemon src/server.js",
         "test": "node tests/jasmine.js"
     },

@@ -1,0 +1,31 @@
+{
+    "port": 8080,
+    "database": {
+        "host": "ds235840.mlab.com",
+        "name": "heroku_xjgn5lw6",
+        "port": "35840"
+    },
+    "security": {
+        "tokenLife": "12h"
+    },
+    "host": "checklist-sl-api.herokuapp.com",
+    "protocol": "http",
+    "baseUrl": "/api",
+    "passRecovery": {
+        "tokenLife": "12h"
+    },
+    "loggingLevel": "debug",
+    "clients": {
+        "webApi": {
+            "name": "ChecklistSLApi",
+            "secret": "api-shouldbesomehashedvalue"
+        },
+        "webUi": {
+            "name": "ChecklistSLUi",
+            "secret": "ui-shouldbesomehashedvalue"
+        }
+    },
+    "translation": {
+        "apiKey": "trnsl.1.1.20171205T160848Z.40acfb7112cde17a.f2a30cf37f048cfe8b859d205cd515aa4e775ff5"
+    }
+}
