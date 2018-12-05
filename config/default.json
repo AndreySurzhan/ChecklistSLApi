@@ -3,7 +3,9 @@
     "database": {
         "host": "localhost",
         "name": "ChecklistSLDb",
-        "port": "27017"
+        "port": "27017",
+        "user": "checklistsl",
+        "password": ""
     },
     "security": {
         "tokenLife": "12h"

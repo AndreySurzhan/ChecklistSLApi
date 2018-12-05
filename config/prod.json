@@ -1,12 +1,22 @@
 {
+    "port": 8080,
     "database": {
         "host": "",
         "name": "",
-        "port": ""
+        "port": "",
+        "user": "",
+        "password": ""
     },
-    "host": "localhost",
+    "security": {
+        "tokenLife": "12h"
+    },
+    "host": "",
     "protocol": "http",
-    "loggingLevel": "info",
+    "baseUrl": "/api",
+    "passRecovery": {
+        "tokenLife": "12h"
+    },
+    "loggingLevel": "debug",
     "clients": {
         "webApi": {
             "name": "ChecklistSLApi",
@@ -16,5 +26,8 @@
             "name": "ChecklistSLUi",
             "secret": "ui-shouldbesomehashedvalue"
         }
+    },
+    "translation": {
+        "apiKey": "trnsl.1.1.20171205T160848Z.40acfb7112cde17a.f2a30cf37f048cfe8b859d205cd515aa4e775ff5"
     }
 }

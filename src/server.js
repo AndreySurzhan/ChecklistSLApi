@@ -11,7 +11,9 @@ const hideDocumentFieldsMongoosePlugin = require('./utils/mongoosePlugins/hideDo
 const databaseHost = config.get(`database.host`);
 const databasePort = config.get(`database.port`);
 const databaseName = config.get(`database.name`);
-const databaseUrl = `mongodb://${databaseHost}:${databasePort}/${databaseName}`;
+const databaseUser = config.get(`database.user`);
+const databasePassword = config.get(`database.password`);
+const databaseUrl = `mongodb://${databaseUser}:${databasePassword}@${databaseHost}:${databasePort}/${databaseName}`;
 const appPort = process.env.PORT || config.get(`port`);
 const webApiClient = config.get('clients.webApi');
 
