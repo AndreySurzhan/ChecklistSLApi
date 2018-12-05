@@ -9,7 +9,7 @@
         "tokenLife": "12h"
     },
     "host": "checklist-sl-api.herokuapp.com",
-    "protocol": "http",
+    "protocol": "https",
     "baseUrl": "/api",
     "passRecovery": {
         "tokenLife": "12h"
