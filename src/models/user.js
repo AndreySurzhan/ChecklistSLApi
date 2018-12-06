@@ -12,6 +12,66 @@ let UserSchema;
 let Schema = mongoose.Schema;
 
 /**
+ *  @swagger
+ * 
+ *  components:
+ *    schemas:
+ *      AuditDate:
+ *        type: object
+ *        properties:
+ *          created:
+ *            type: string
+ *            format: date-time
+ *          modified:
+ *            type: string
+ *            format: date-time
+ *      Audit:
+ *        allOf:
+ *          - type: object
+ *            properties:
+ *              createdBy:
+ *                type: string
+ *              modifiedBy:
+ *                type: string
+ *      MongoId:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *            format: uuid
+ *            uniqueItems: true
+ *      NewUser:
+ *        type: object
+ *        properties:
+ *          username:
+ *            type: string
+ *            uniqueItems: true
+ *          password:
+ *            type: string
+ *          languages:
+ *            type: array
+ *            items:
+ *              type: string
+ *      User:      
+ *        allOf:
+ *          - $ref: '#/components/schemas/MongoId'
+ *          - $ref: '#/components/schemas/NewUser'
+ *          - type: object
+ *            properties:
+ *              checklists:
+ *                type: array
+ *                items:
+ *                  $ref: '#/components/schemas/Checklist'
+ *              token:
+ *                type: string
+ *          - $ref: '#/components/schemas/AuditDate'
+ *            required:
+ *              - username
+ *              - password
+ *              - languages
+*/
+
+/**
  * User mongoose schema.
  * @class models/UserSchema
  */

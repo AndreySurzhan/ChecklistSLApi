@@ -9,6 +9,30 @@ let Translation;
 let TranslationSchema;
 
 /**
+ *  @swagger
+ * 
+ *  components:
+ *    schemas:
+ *      Item:      
+ *        allOf:
+ *          - $ref: '#/components/schemas/MongoId'
+ *          - type: object
+ *            properties:
+ *              language:
+ *                type: string
+ *              translation:
+ *                type: string
+ *              created:
+ *                type: string
+ *                format: date-time
+ *              createdBy:
+ *                type: string
+ *            required:
+ *              - language
+ *              - isChecked
+*/
+
+/**
  * Translation mongoose schema.
  * @class models/TranslationSchema
  */

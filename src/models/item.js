@@ -10,6 +10,34 @@ let ItemSchema;
 let Schema = mongoose.Schema;
 
 /**
+ *  @swagger
+ * 
+ *  components:
+ *    schemas:
+ *      Item:      
+ *        allOf:
+ *          - $ref: '#/components/schemas/MongoId'
+ *          - type: object
+ *            properties:
+ *              text:
+ *                type: string
+ *              isChecked:
+ *                type: boolean
+ *              checklists:
+ *                type: array
+ *                checklists:
+ *                  $ref: '#/components/schemas/Checklist'
+ *              translations:
+ *                type: array
+ *                translations:
+ *                  $ref: '#/components/schemas/Translation'
+ *          - $ref: '#/components/schemas/Audit'
+ *            required:
+ *              - text
+ *              - isChecked
+*/
+
+/**
  * Item mongoose schema.
  * @class models/ItemSchema
  */

@@ -9,6 +9,34 @@ let ChecklistSchema;
 let Schema = mongoose.Schema;
 
 /**
+ *  @swagger
+ * 
+ *  components:
+ *    schemas:
+ *      Checklist:      
+ *        allOf:
+ *          - $ref: '#/components/schemas/MongoId'
+ *          - type: object
+ *            properties:
+ *              name:
+ *                type: string
+ *              isActive:
+ *                type: boolean
+ *              items:
+ *                type: array
+ *                items:
+ *                  $ref: '#/components/schemas/Item'
+ *              users:
+ *                type: array
+ *                items:
+ *                  type: string
+ *          - $ref: '#/components/schemas/Audit'
+ *            required:
+ *              - name
+ *              - isActive
+*/
+
+/**
  * Checklist mongoose schema.
  * @class models/ChecklistSchema
  */

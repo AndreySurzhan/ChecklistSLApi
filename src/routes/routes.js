@@ -2,21 +2,27 @@
 const passport = require('../auth/passport');
 const config = require('config');
 const checklistRoutes = require('./checklist');
+const swaggerSpec = require('../swaggerSpec');
+const swaggerUi = require('swagger-ui-express');
 // const itemRoutes = require('./item');
 const userRoutes = require('./user');
 /// Local variables
 let authenticate;
 
 module.exports = (app, router) => {
-    authenticate = passport.authenticate('jwt', {session: false});
-    authenticateWithPassword = passport.authenticate('local', {session: false});
+    authenticate = passport.authenticate('jwt', { session: false });
+    authenticateWithPassword = passport.authenticate('local', {
+        session: false
+    });
 
     // Register API routes
-    router.get('/', (req, res) => {
-        res.json({
-            message: 'Welcome to ChecklistSL'
-        });
-    });
+    router.use('/', swaggerUi.serve);
+    router.get('/', swaggerUi.setup(swaggerSpec));
+
+    router.get('/api-docs.json', (req, res) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(swaggerSpec);
+      });
 
     checklistRoutes(router, authenticate);
     userRoutes(router, authenticate, authenticateWithPassword);
