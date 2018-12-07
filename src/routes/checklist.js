@@ -123,10 +123,10 @@ module.exports = (router, authenticate) => {
     /**
      * @swagger
      *
-     * /checklist/{id}:
+     * /checklist/{id}/item:
      *   put:
      *     tags:
-     *     - checklist
+     *     - item
      *     security:
      *      - bearerAuth: []
      *     description: Create New Item
