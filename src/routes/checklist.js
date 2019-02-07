@@ -6,7 +6,7 @@ module.exports = (router, authenticate) => {
     /**
      * @swagger
      *
-     * /checklist:
+     * /api/checklist:
      *   post:
      *     tags:
      *     - checklist
@@ -21,7 +21,7 @@ module.exports = (router, authenticate) => {
      *         required: true
      *         in: body
      *         schema:
-     *           type: string'
+     *           type: string
      *     responses:
      *       200:
      *         description: Created Checklist
@@ -35,7 +35,7 @@ module.exports = (router, authenticate) => {
     /**
      * @swagger
      *
-     * /checklist/{id}:
+     * /api/checklist/{id}:
      *   patch:
      *     tags:
      *     - checklist
@@ -50,7 +50,7 @@ module.exports = (router, authenticate) => {
      *         required: true
      *         in: path
      *         schema:
-     *           type: string'
+     *           type: string
      *       - name: checklist
      *         description: Checklist Request Model
      *         required: true
@@ -70,7 +70,7 @@ module.exports = (router, authenticate) => {
     /**
      * @swagger
      *
-     * /checklist:
+     * /api/checklist:
      *   get:
      *     tags:
      *     - checklist
@@ -94,7 +94,7 @@ module.exports = (router, authenticate) => {
     /**
      * @swagger
      *
-     * /checklist/{id}:
+     * /api/checklist/{id}:
      *   get:
      *     tags:
      *     - checklist
@@ -109,7 +109,7 @@ module.exports = (router, authenticate) => {
      *         required: true
      *         in: path
      *         schema:
-     *           type: string'
+     *           type: string
      *     responses:
      *       200:
      *         description: Existing checklist
@@ -123,7 +123,7 @@ module.exports = (router, authenticate) => {
     /**
      * @swagger
      *
-     * /checklist/{id}/item:
+     * /api/checklist/{id}/item:
      *   put:
      *     tags:
      *     - item
@@ -138,7 +138,7 @@ module.exports = (router, authenticate) => {
      *         required: true
      *         in: path
      *         schema:
-     *           type: string'
+     *           type: string
      *       - name: item
      *         description: New Item Request Model
      *         required: true
@@ -158,7 +158,7 @@ module.exports = (router, authenticate) => {
     /**
      * @swagger
      *
-     * /checklist/{id}/item/{itemId}:
+     * /api/checklist/{id}/item/{itemId}:
      *   patch:
      *     tags:
      *     - item
@@ -173,13 +173,13 @@ module.exports = (router, authenticate) => {
      *         required: true
      *         in: path
      *         schema:
-     *           type: string'
+     *           type: string
      *       - name: itemId
      *         description: Existing Item Id
      *         required: true
      *         in: path
      *         schema:
-     *           type: string'
+     *           type: string
      *       - name: item
      *         description: New Item Request Model
      *         required: true
@@ -199,7 +199,7 @@ module.exports = (router, authenticate) => {
     /**
      * @swagger
      *
-     * /checklist/{id}/item/{itemId}:
+     * /api/checklist/{id}/item/{itemId}:
      *   delete:
      *     tags:
      *     - item
@@ -214,13 +214,13 @@ module.exports = (router, authenticate) => {
      *         required: true
      *         in: path
      *         schema:
-     *           type: string'
+     *           type: string
      *       - name: itemId
      *         description: Existing Item Id
      *         required: true
      *         in: path
      *         schema:
-     *           type: string'
+     *           type: string
      *     responses:
      *       200:
      *         description: Deleted Item
@@ -234,7 +234,7 @@ module.exports = (router, authenticate) => {
     /**
      * @swagger
      *
-     * /checklist/{id}:
+     * /api/checklist/{id}:
      *   delete:
      *     tags:
      *     - checklist
@@ -249,7 +249,7 @@ module.exports = (router, authenticate) => {
      *         required: true
      *         in: path
      *         schema:
-     *           type: string'
+     *           type: string
      *     responses:
      *       200:
      *         description: Deleted Item

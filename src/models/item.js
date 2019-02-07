@@ -25,11 +25,11 @@ let Schema = mongoose.Schema;
  *                type: boolean
  *              checklists:
  *                type: array
- *                checklists:
+ *                items:
  *                  $ref: '#/components/schemas/Checklist'
  *              translations:
  *                type: array
- *                translations:
+ *                items:
  *                  $ref: '#/components/schemas/Translation'
  *          - $ref: '#/components/schemas/Audit'
  *            required:

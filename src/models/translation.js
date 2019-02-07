@@ -13,7 +13,7 @@ let TranslationSchema;
  * 
  *  components:
  *    schemas:
- *      Item:      
+ *      Translation:      
  *        allOf:
  *          - $ref: '#/components/schemas/MongoId'
  *          - type: object
@@ -29,7 +29,7 @@ let TranslationSchema;
  *                type: string
  *            required:
  *              - language
- *              - isChecked
+ *              - translation
 */
 
 /**

@@ -6,7 +6,7 @@ module.exports = (router, authenticate, authenticateWithPassword) => {
     /**
      * @swagger
      *
-     * /registration:
+     * /api/registration:
      *   post:
      *     tags:
      *     - user
@@ -38,7 +38,7 @@ module.exports = (router, authenticate, authenticateWithPassword) => {
     /**
      * @swagger
      *
-     * /login:
+     * /api/login:
      *   post:
      *     tags:
      *     - user
@@ -70,7 +70,7 @@ module.exports = (router, authenticate, authenticateWithPassword) => {
     /**
      * @swagger
      *
-     * /user:
+     * /api/user:
      *   patch:
      *     tags:
      *     - user
@@ -104,7 +104,7 @@ module.exports = (router, authenticate, authenticateWithPassword) => {
     /**
      * @swagger
      *
-     * /user/{userId}:
+     * /api/user/{userId}:
      *   get:
      *     tags:
      *     - user
