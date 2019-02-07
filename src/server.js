@@ -34,9 +34,9 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
 
 // load our routes and pass in our app and fully configured passport
 require('../src/routes/routes')(app, express.Router());
