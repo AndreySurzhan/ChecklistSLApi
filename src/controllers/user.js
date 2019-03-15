@@ -46,7 +46,7 @@ module.exports = class UserController {
         let user;
 
         try {
-            await res.json(req.user.token);
+            await res.json(req.user);
         } catch (error) {
             next(error);
         }
