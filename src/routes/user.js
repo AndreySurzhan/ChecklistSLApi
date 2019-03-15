@@ -63,7 +63,7 @@ module.exports = (router, authenticate, authenticateWithPassword) => {
      *         content:
      *           application/json:
      *             schema:
-     *               type: string
+     *               $ref: '#/components/schemas/User'
      */
     router.post('/login', authenticateWithPassword, userController.loginUser.bind(userController));
 
