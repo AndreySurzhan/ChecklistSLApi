@@ -6,7 +6,7 @@ const swaggerOptions = {
         openapi: '3.0.0',
         info: {
             title: 'Web Api for ChecklistSL project',
-            description: "This is a  Expressjs based Web Api for ChecklistSL application",
+            description: "This is a  Expressjs based Web Api for ChecklistSL application. Powered by Yandex.Translate (http://translate.yandex.com/)",
             contact: {
                 "name": "Andrei Surzhan",
                 "email": "surzhan.a.y@gmail.com"
