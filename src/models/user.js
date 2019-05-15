@@ -1,6 +1,5 @@
 /// Libs
 const bcrypt = require('bcrypt-nodejs');
-const config = require('config');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const logging = require('../utils/logging');
@@ -226,8 +225,8 @@ UserSchema.methods.generateJWT = function() {
     return jwt.sign({
       username: that.username,
       id: that._id,
-    }, config.get('clients.webApi.secret'), {
-        expiresIn: config.get('security.tokenLife')
+    }, process.env.CLIENT_WEB_API_SECRET, {
+        expiresIn: process.env.PASSWORD_RECOVERY_TOKEN_LIFE
     });
 }
 

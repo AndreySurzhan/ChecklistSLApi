@@ -1,4 +1,3 @@
-const config = require('config');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const UserModel = require('../models/user');
@@ -42,7 +41,7 @@ passport.use(new LocalStrategy(
 
 let pass = passport.use(new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: config.get('clients.webApi.secret')
+        secretOrKey: process.env.CLIENT_WEB_API_SECRET
     },
     (jwtPayload, done) => {
         return UserModel.findById(jwtPayload.id)

@@ -1,6 +1,5 @@
-const config = require('config');
 const logging = require('../utils/logging');
-const translate = require('yandex-translate')(config.get('translation.apiKey'));
+const translate = require('yandex-translate')(process.env.TRANSLATION_API_KEY);
 
 module.exports = class Translate {
 

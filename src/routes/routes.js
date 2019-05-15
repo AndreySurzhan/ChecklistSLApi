@@ -1,6 +1,5 @@
 /// Libs
 const passport = require('../auth/passport');
-const config = require('config');
 const checklistRoutes = require('./checklist');
 const swaggerSpec = require('../swaggerSpec');
 const swaggerUi = require('swagger-ui-express');
@@ -28,5 +27,5 @@ module.exports = (app, router) => {
     userRoutes(router, authenticate, authenticateWithPassword);
 
     // All of our routes will be prefixed with '/api'
-    app.use(config.get('baseUrl'), router);
+    app.use(process.env.BASE_URL, router);
 };

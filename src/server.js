@@ -1,4 +1,4 @@
-const config = require('config');
+require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -6,17 +6,18 @@ const logging = require('./utils/logging');
 const passport = require('passport');
 const session = require('express-session');
 
+const env = process.env
+
 //mongoose plugins
 const hideDocumentFieldsMongoosePlugin = require('./utils/mongoosePlugins/hideDocumentFields');
 
-const databaseHost = config.get(`database.host`);
-const databasePort = config.get(`database.port`);
-const databaseName = config.get(`database.name`);
-const databaseUser = config.get(`database.user`);
-const databasePassword = config.get(`database.password`);
+const databaseHost = env.DATABASE_HOST
+const databasePort = ~~env.DATABASE_PORT
+const databaseName = env.DATABASE_NAME
+const databaseUser = env.DATABASE_USER
+const databasePassword = env.DATABASE_PASSWORD;
 const databaseUrl = `mongodb://${databaseUser}:${databasePassword}@${databaseHost}:${databasePort}/${databaseName}`;
-const appPort = process.env.PORT || config.get(`port`);
-const webApiClient = config.get('clients.webApi');
+const appPort = ~~env.PORT
 
 let server;
 
@@ -29,8 +30,8 @@ let app = express();
 app.use(express.json());
 
 app.use(session({
-    name: webApiClient.name,
-    secret: webApiClient.secret,
+    name: env.CLIENT_WEB_UI_NAME,
+    secret: env.CLIENT_WEB_API_SECRET,
     resave: true,
     saveUninitialized: true
 }));
