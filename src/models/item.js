@@ -26,7 +26,7 @@ let Schema = mongoose.Schema;
  *              checklists:
  *                type: array
  *                items:
- *                  $ref: '#/components/schemas/Checklist'
+ *                  $ref: '#/components/schemas/MongoId'
  *              translations:
  *                type: array
  *                items:

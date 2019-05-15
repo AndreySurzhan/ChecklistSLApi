@@ -60,7 +60,7 @@ let Schema = mongoose.Schema;
  *              checklists:
  *                type: array
  *                items:
- *                  $ref: '#/components/schemas/Checklist'
+ *                  $ref: '#/components/schemas/MongoId'
  *              token:
  *                type: string
  *          - $ref: '#/components/schemas/AuditDate'
