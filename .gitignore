@@ -6,3 +6,4 @@ build/
 package-lock.json
 .vscode/
 .env
+newrelic_agent.log

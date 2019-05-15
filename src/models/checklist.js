@@ -25,7 +25,7 @@ let Schema = mongoose.Schema;
  *              items:
  *                type: array
  *                items:
- *                  $ref: '#/components/schemas/Item'
+ *                  $ref: '#/components/schemas/MongoId'
  *              users:
  *                type: array
  *                items:
