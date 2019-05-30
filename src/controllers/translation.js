@@ -21,9 +21,7 @@ module.exports = class Translate {
                         return;
                     }
 
-                    translation.translation = response.text
-                    console.log(response)
-                    console.log(response.text)
+                    translation.translation = response.text.join();
                     translation.language = user.languages[i]
                     translation.created = new Date();
                     translation.createdBy = user._id
