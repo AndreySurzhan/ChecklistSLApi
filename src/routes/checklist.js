@@ -21,7 +21,10 @@ module.exports = (router, authenticate) => {
      *         required: true
      *         in: body
      *         schema:
-     *           type: string
+     *           type: object
+     *           properties:
+     *             name:
+     *               type: string
      *     responses:
      *       200:
      *         description: Created Checklist
