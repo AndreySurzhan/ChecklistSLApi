@@ -29,7 +29,7 @@ module.exports = class UserRepository {
             logging.error(`Failed to create new user ${user.username}`);
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!createdUser) {

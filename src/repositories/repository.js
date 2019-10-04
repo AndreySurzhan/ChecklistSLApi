@@ -32,7 +32,7 @@ module.exports = class Repository {
             logging.error(`Failed to create new document into "${this.collectionName}"`);
             logging.error(error);
 
-            return error;
+            throw error;
         }
 
         if (!doc) {
