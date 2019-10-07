@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const logging = require('../utils/logging');
+const validations = require('../utils/validations');
 /// Models
 const Checklist = require('./checklist');
 /// Local variables
@@ -95,7 +96,7 @@ UserSchema = new Schema({
      */
     hashedPassword: {
         type: String,
-        required: true,
+        required: [true, 'Password is required'],
         hideField: true
     },
 
@@ -105,10 +106,12 @@ UserSchema = new Schema({
      * @type ObjectId[]
      * @memberof models/UserSchema
      */
-    checklists: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Checklist'
-    }],
+    checklists: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Checklist'
+        }
+    ],
 
     /**
      * The languages to use for translation.
@@ -116,9 +119,11 @@ UserSchema = new Schema({
      * @type String[]
      * @memberof models/UserSchema
      */
-    languages: [{
-        type: String
-    }],
+    languages: [
+        {
+            type: String
+        }
+    ],
 
     /**
      * The creation date.
@@ -163,10 +168,9 @@ UserSchema.virtual('password')
  * @memberof models/UserSchema
  * @virtual
  */
-UserSchema.virtual('token')
-    .get(function() {
-        return this.generateJWT();
-    });
+UserSchema.virtual('token').get(function() {
+    return this.generateJWT();
+});
 
 /**
  * @function
@@ -177,7 +181,7 @@ UserSchema.virtual('token')
  *
  * @returns {string} hassedPass
  */
-UserSchema.methods.generateHash = (password) => {
+UserSchema.methods.generateHash = password => {
     let hashedPassword;
 
     try {
@@ -187,6 +191,7 @@ UserSchema.methods.generateHash = (password) => {
         logging.error(error);
         hashedPassword = null;
     }
+
     return hashedPassword;
 };
 
@@ -209,6 +214,7 @@ UserSchema.methods.validPassword = function(password) {
         logging.error(error);
         isValid = false;
     }
+
     return isValid;
 };
 
@@ -222,15 +228,23 @@ UserSchema.methods.validPassword = function(password) {
 UserSchema.methods.generateJWT = function() {
     let that = this;
 
-    return jwt.sign({
-      username: that.username,
-      id: that._id,
-    }, process.env.CLIENT_WEB_API_SECRET, {
-        expiresIn: process.env.PASSWORD_RECOVERY_TOKEN_LIFE
-    });
-}
+    return jwt.sign(
+        {
+            username: that.username,
+            id: that._id
+        },
+        process.env.CLIENT_WEB_API_SECRET,
+        {
+            expiresIn: process.env.PASSWORD_RECOVERY_TOKEN_LIFE
+        }
+    );
+};
 
 UserSchema.set('toObject', { virtuals: true });
+
+UserSchema.path('username').validate((userEmail) => {
+    return validations.isNotEmpty(userEmail) && validations.isEmailValid(userEmail);
+}, 'Is not valid email address');
 
 if (mongoose.models.User) {
     User = mongoose.model('User');

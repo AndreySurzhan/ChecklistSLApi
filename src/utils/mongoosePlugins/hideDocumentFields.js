@@ -1,4 +1,4 @@
-let hideDocumentFields = (schema) => {
+const hideDocumentFields = (schema) => {
 
     /**
      * Transforms of the resulting object
