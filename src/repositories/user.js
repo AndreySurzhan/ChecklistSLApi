@@ -1,5 +1,6 @@
 const logging = require('../utils/logging');
 const UserModel = require('../models/user');
+const NotFoundError = require('../utils/errors').NotFoundError
 
 module.exports = class UserRepository {
     /**
@@ -27,7 +28,6 @@ module.exports = class UserRepository {
             createdUser = await UserModel.findById(user._id).populate('checklists');
         } catch (error) {
             logging.error(`Failed to create new user ${user.username}`);
-            logging.error(error);
 
             throw error;
         }
@@ -60,13 +60,12 @@ module.exports = class UserRepository {
             });
         } catch (error) {
             logging.error(`Failed to find user with id "${id}" from database`);
-            logging.error(error);
 
             throw error;
         }
 
         if (!existedUser) {
-            throw new Error(`User with id "${id}" doesn't exist`)
+            throw new NotFoundError(`User with id "${id}" doesn't exist`)
         }
 
         logging.info(`User has been successfully found by id "${id}"`);
@@ -96,13 +95,12 @@ module.exports = class UserRepository {
                 });
         } catch (error) {
             logging.error(`Failed to find user with username "${username}" from database`);
-            logging.error(error);
 
             throw error;
         }
 
         if (!existedUser) {
-            throw new Error(`User with username "${username}" doesn't exist`)
+            throw new Error(`User with username "${username}" doesn't exist`);
         }
 
         logging.info(`User has been successfully found by username "${username}"`);
@@ -125,17 +123,16 @@ module.exports = class UserRepository {
                 checklists: checklistId
             });
         } catch (error) {
-            logging.error(`Failed to find users by checklistid "${checklistId}" from database`);
-            logging.error(error);
+            logging.error(`Failed to find users by checklistId "${checklistId}" from database`);
 
             throw error;
         }
 
         if (!existedUsers) {
-            throw new Error(`Users with checklist "${checklistId}" don't exist`)
+            throw new NotFoundError(`Users with checklist "${checklistId}" don't exist`);
         }
 
-        logging.info(`Users has been successfully found by cehcklist id "${checklistId}"`);
+        logging.info(`Users has been successfully found by checklist id "${checklistId}"`);
         return existedUsers;
     }
 
@@ -167,17 +164,16 @@ module.exports = class UserRepository {
                 }
             });
         } catch (error) {
-            logging.error(`Failed to update user with id "${data._id}" and username ${data.username}`)
-            logging.error(error);
+            logging.error(`Failed to update user with id "${data._id}" and username ${data.username}`);
 
             throw error;
         }
 
         if (!updatedUser) {
-            return new Error(`Failed to get updated user with id "${id}"`)
+            return new Error(`Failed to get updated user with id "${id}"`);
         }
 
-        logging.info(`User with username ${updatedUser.username} has been succesfully updated`);
+        logging.info(`User with username ${updatedUser.username} has been successfully updated`);
 
         return updatedUser;
     }

@@ -1,27 +1,15 @@
-export class NotFoundError extends Error {
+module.exports.NotFoundError = class NotFoundError extends Error {
     constructor(...args) {
         super(...args);
-        Error.captureStackTrace(this, NotFoundError);
+
+        this.statusCode = 404;
     }
 }
 
-export class ValidationError extends Error {
+module.exports.MethodNotAllowedError = class MethodNotAllowedError extends Error {
     constructor(...args) {
         super(...args);
-        Error.captureStackTrace(this, ValidationError);
-    }
-}
 
-export class MethodNotAllowedError extends Error {
-    constructor(...args) {
-        super(...args);
-        Error.captureStackTrace(this, MethodNotAllowedError);
-    }
-}
-
-export class CastError extends Error {
-    constructor(...args) {
-        super(...args);
-        Error.captureStackTrace(this, MethodNotAllowedError);
+        this.statusCode = 405;
     }
 }

@@ -73,7 +73,7 @@ ItemSchema = new Schema({
     ],
 
     /**
-     * Marker that determins that item is checked.
+     * Marker that determines that item is checked.
      *
      * @type boolean
      * @memberof models/ItemSchema

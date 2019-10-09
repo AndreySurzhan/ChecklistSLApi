@@ -1,4 +1,5 @@
 const logging = require('../utils/logging');
+const NotFoundError = require('../utils/errors').NotFoundError
 
 module.exports = class Repository {
 
@@ -30,7 +31,6 @@ module.exports = class Repository {
         } catch (error) {
             logging.error(data);
             logging.error(`Failed to create new document into "${this.collectionName}"`);
-            logging.error(error);
 
             throw error;
         }
@@ -62,13 +62,12 @@ module.exports = class Repository {
             }
         } catch (error) {
             logging.error(`Failed to find document with id "${id}" from "${this.collectionName}" collection`);
-            logging.error(error);
 
             throw error;
         }
 
         if (!doc) {
-            throw new Error(`Document with id "${id}" doesn't exist in "${this.collectionName}" collection`);
+            throw new NotFoundError(`Document with id "${id}" doesn't exist in "${this.collectionName}" collection`);
         }
 
         logging.info(`Document has been successfully found by id "${id}" in "${this.collectionName}" collection`);
@@ -99,17 +98,16 @@ module.exports = class Repository {
             
             doc = await this.findById(id);
         } catch (error) {
-            logging.error(`Failed to update document with id "${id}" in "${this.collectionName}" collection`)
-            logging.error(error);
+            logging.error(`Failed to update document with id "${id}" in "${this.collectionName}" collection`);
 
             throw error;
         }
 
         if (!doc) {
-            return new Error(`Failed to get updated document with id "${id}" from "${this.collectionName}" collection`)
+            return new Error(`Failed to get updated document with id "${id}" from "${this.collectionName}" collection`);
         }
 
-        logging.info(`Document with id ${id} has been succesfully updated in "${this.collectionName}" collection`);
+        logging.info(`Document with id ${id} has been successfully updated in "${this.collectionName}" collection`);
 
         return doc;
     }
@@ -130,17 +128,16 @@ module.exports = class Repository {
                 _id: id
             });
         } catch (error) {
-            logging.error(`Failed to delete document by id "${id}" from "${this.collectionName}" collection`)
-            logging.error(error);
+            logging.error(`Failed to delete document by id "${id}" from "${this.collectionName}" collection`);
 
             throw error;
         }
 
         if (!doc) {
-            throw new Error(`Failed to get deleted document "${id}" from "${this.collectionName}" collection`)
+            throw new Error(`Failed to get deleted document "${id}" from "${this.collectionName}" collection`);
         }
 
-        logging.info(`Document "${id}" has been succesfully deleted from "${this.collectionName}" collection`);
+        logging.info(`Document "${id}" has been successfully deleted from "${this.collectionName}" collection`);
 
         return doc;
     }
@@ -163,17 +160,16 @@ module.exports = class Repository {
                 }
             });
         } catch (error) {
-            logging.error(`Failed to delete many documents by ids "${ids}"  from "${this.collectionName}" collection`)
-            logging.error(error);
+            logging.error(`Failed to delete many documents by ids "${ids}"  from "${this.collectionName}" collection`);
 
             throw error;
         }
 
         if (!docs) {
-            throw new Error(`Failed to get deleted document "${ids}" from "${this.collectionName}" collection`)
+            throw new Error(`Failed to get deleted document "${ids}" from "${this.collectionName}" collection`);
         }
 
-        logging.info(`Documents "${ids}" have been succesfully deleted from "${this.collectionName}" collection`);
+        logging.info(`Documents "${ids}" have been successfully deleted from "${this.collectionName}" collection`);
 
         return docs;
     }

@@ -1,6 +1,7 @@
 const logging = require('../utils/logging');
 const ItemModel = require('../models/item');
 const Repository = require('./repository');
+const NotFoundError = require('../utils/errors').NotFoundError
 
 module.exports = class ItemRepository extends Repository {
     constructor(){
@@ -24,13 +25,12 @@ module.exports = class ItemRepository extends Repository {
             });
         } catch (error) {
             logging.error(`Failed to find all items by checklist id "${checklistId}" from database`);
-            logging.error(error);
 
             throw error;
         }
 
         if (!existedItems) {
-            throw new Error(`Items with checklist id "${checklistId}" don't exist`)
+            throw new NotFoundError(`Items with checklist id "${checklistId}" don't exist`)
         }
 
         logging.info(`All Items have been successfully found by checklist id "${checklistId}"`);
