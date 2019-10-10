@@ -45,6 +45,7 @@ app.use(passport.session());
 // load our routes and pass in our app and fully configured passport
 require('../src/routes/routes')(app, express.Router());
 
+// final error handler
 app.use(errorHandlerExpressjs);
 
 // Get Mongoose to use the global promise library

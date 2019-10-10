@@ -5,11 +5,3 @@ module.exports.NotFoundError = class NotFoundError extends Error {
         this.statusCode = 404;
     }
 }
-
-module.exports.MethodNotAllowedError = class MethodNotAllowedError extends Error {
-    constructor(...args) {
-        super(...args);
-
-        this.statusCode = 405;
-    }
-}
