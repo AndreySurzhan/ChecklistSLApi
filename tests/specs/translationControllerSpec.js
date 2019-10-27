@@ -1,6 +1,5 @@
 const TranslationController = require('../../src/controllers/translation');
 
-
 describe('Integration testing of Translation Controller', () => {
 
     beforeAll(async() => {
