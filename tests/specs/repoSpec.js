@@ -1,7 +1,6 @@
 const ChecklistRepo = require('../../src/repositories/checklist');
 const ItemRepo = require('../../src/repositories/item');
 const UserRepo = require('../../src/repositories/user');
-const TraslationModel = require('../../src/models/translation')
 
 
 describe('Integration testing for Repositories', () => {

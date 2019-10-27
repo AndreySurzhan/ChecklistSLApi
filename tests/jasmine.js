@@ -15,8 +15,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 jasmine.onComplete((passed) => {
     mongoose.disconnect(() => {
         logging.info('Closed out remaining database connections');
+        
         server.close(() => {
             logging.info('Closed out remaining web server connections');
+
             if (passed) {
                 process.exit();
             } else {

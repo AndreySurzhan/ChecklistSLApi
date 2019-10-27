@@ -179,17 +179,24 @@ UserSchema.virtual('token').get(function() {
  *
  * @param {string} password
  *
- * @returns {string} hassedPass
+ * @returns {string} hashedPassword
  */
 UserSchema.methods.generateHash = password => {
-    let hashedPassword;
+    let hashedPassword = null;
+
+    if (!validations.isNotEmpty(password)) {
+        const validationError = new mongoose.Error.ValidationError();
+
+        validationError.message = 'Password should not be empty'
+
+        throw validationError;
+    }
 
     try {
+
         hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
     } catch (error) {
-        logging.error('Failed to hash password');
-        logging.error(error);
-        hashedPassword = null;
+        throw error;
     }
 
     return hashedPassword;

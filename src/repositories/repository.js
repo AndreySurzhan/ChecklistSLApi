@@ -134,7 +134,7 @@ module.exports = class Repository {
         }
 
         if (!doc) {
-            throw new Error(`Failed to get deleted document "${id}" from "${this.collectionName}" collection`);
+            throw new NotFoundError(`Failed to get deleted document "${id}" from "${this.collectionName}" collection`);
         }
 
         logging.info(`Document "${id}" has been successfully deleted from "${this.collectionName}" collection`);
@@ -166,7 +166,7 @@ module.exports = class Repository {
         }
 
         if (!docs) {
-            throw new Error(`Failed to get deleted document "${ids}" from "${this.collectionName}" collection`);
+            throw new NotFoundError(`Failed to get deleted document "${ids}" from "${this.collectionName}" collection`);
         }
 
         logging.info(`Documents "${ids}" have been successfully deleted from "${this.collectionName}" collection`);

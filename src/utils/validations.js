@@ -1,9 +1,5 @@
-const emailValidation = {
+const validator = {
     isEmailValid(email) {
-        if(email.includes('andrei')) {
-            return true;
-        }
-    
         if (/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)) {
             return true
         }
@@ -19,4 +15,4 @@ const emailValidation = {
     } 
 }
 
-module.exports = emailValidation
+module.exports = validator

@@ -1,5 +1,6 @@
 /// Libs
 const mongoose = require('mongoose');
+const validations = require('../utils/validations');
 /// Models
 const Item = require('./item');
 const User = require('./user');
@@ -75,7 +76,7 @@ ChecklistSchema = new Schema({
     }],
 
     /**
-     * Marker that determins that checklist is active.
+     * Marker that determines that checklist is active.
      *
      * @type boolean
      * @memberof models/ChecklistSchema
