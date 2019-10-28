@@ -1,8 +1,4 @@
-const result = require('dotenv').config();
-if (result.error) {
-    throw result.error
-}
-
+require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
