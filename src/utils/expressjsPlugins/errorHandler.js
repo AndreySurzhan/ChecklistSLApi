@@ -8,6 +8,8 @@ const errorHandler = function(err, req, res, next) {
         err.statusCode = 400;
     } else if (err.name && err.name === mongooseError.DocumentNotFoundError.name) {
         err.statusCode = 404;
+    } else if (err.name && err.name === mongooseError.CastError.name && err.path === '_id') {
+        err.statusCode = 404;
     } else if (err.name && err.name === mongooseError.CastError.name) {
         err.statusCode = 400;
     } else if (err.name && err.name === 'MongoError' && err.message.indexOf('E11000') > -1) {

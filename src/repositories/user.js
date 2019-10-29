@@ -1,6 +1,8 @@
 const logging = require('../utils/logging');
 const UserModel = require('../models/user');
 const NotFoundError = require('../utils/errors').NotFoundError
+const validations = require('../utils/validations');
+const mongoose = require('mongoose');
 
 module.exports = class UserRepository {
     /**
@@ -152,7 +154,15 @@ module.exports = class UserRepository {
     async update(id, data) {
         let updatedUser;
 
-        try {
+        try {        
+            if (validations.isObjectEmpty(data)) {
+                const validationError = new mongoose.Error.ValidationError();
+
+                validationError.message = 'Body should not be empty'
+        
+                throw validationError;
+            }
+
             updatedUser = await UserModel.findOneAndUpdate({
                 _id: id
             }, data, {
