@@ -27,7 +27,7 @@ module.exports = (router, authenticate, authenticateWithPassword) => {
      *             $ref: '#/components/schemas/NewUser'
      *     responses:
      *       200:
-     *         description: Retrived User By Id
+     *         description: Retrieved User By Id
      *         content:
      *           application/json:
      *             schema:

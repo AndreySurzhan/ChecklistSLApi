@@ -16,7 +16,7 @@ module.exports = (router, authenticate) => {
      *     produces:
      *       - application/json
      *     parameters:
-     *       - name: name
+     *       - name: checklist
      *         description: Checklist name
      *         required: true
      *         in: body
@@ -25,6 +25,14 @@ module.exports = (router, authenticate) => {
      *           properties:
      *             name:
      *               type: string
+     *     requestBody:
+     *       content:
+     *         'application/json':
+     *           schema:
+     *             type: object
+     *             properties:
+     *               name:
+     *                 type: string
      *     responses:
      *       200:
      *         description: Created Checklist
@@ -60,6 +68,11 @@ module.exports = (router, authenticate) => {
      *         in: body
      *         schema:
      *           $ref: '#/components/schemas/Checklist'
+     *     requestBody:
+     *       content:
+     *         'application/json':
+     *           schema:
+     *             $ref: '#/components/schemas/Checklist'
      *     responses:
      *       200:
      *         description: Updated checklist
@@ -148,6 +161,11 @@ module.exports = (router, authenticate) => {
      *         in: body
      *         schema:
      *           $ref: '#/components/schemas/Item'
+     *     requestBody:
+     *       content:
+     *         'application/json':
+     *           schema:
+     *             $ref: '#/components/schemas/Item'
      *     responses:
      *       200:
      *         description: Created Item
@@ -189,6 +207,11 @@ module.exports = (router, authenticate) => {
      *         in: body
      *         schema:
      *           $ref: '#/components/schemas/Item'
+     *     requestBody:
+     *       content:
+     *         'application/json':
+     *           schema:
+     *             $ref: '#/components/schemas/Item'
      *     responses:
      *       200:
      *         description: Updated Item

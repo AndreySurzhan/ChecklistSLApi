@@ -19,6 +19,9 @@ const databasePassword = env.DATABASE_PASSWORD;
 const databaseUrl = `mongodb://${databaseUser}:${databasePassword}@${databaseHost}:${databasePort}/${databaseName}`;
 const appPort = ~~env.PORT
 
+//expressjs plugins
+const errorHandlerExpressjs = require('./utils/expressjsPlugins/errorHandler');
+
 let server;
 
 // register global mongoose plugins
@@ -41,6 +44,9 @@ app.use(passport.session());
 
 // load our routes and pass in our app and fully configured passport
 require('../src/routes/routes')(app, express.Router());
+
+// final error handler
+app.use(errorHandlerExpressjs);
 
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;

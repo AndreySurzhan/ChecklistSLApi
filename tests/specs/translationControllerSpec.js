@@ -1,6 +1,4 @@
 const TranslationController = require('../../src/controllers/translation');
-const UserController = require('../../src/controllers/user');
-
 
 describe('Integration testing of Translation Controller', () => {
 
