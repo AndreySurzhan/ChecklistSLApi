@@ -70,40 +70,6 @@ module.exports = (router, authenticate, authenticateWithPassword) => {
     /**
      * @swagger
      *
-     * /api/user:
-     *   patch:
-     *     tags:
-     *     - user
-     *     security:
-     *      - bearerAuth: []
-     *     description: Update existing user
-     *     produces:
-     *       - application/json
-     *     parameters:
-     *       - name: user
-     *         description: Existing User Request Model
-     *         required: true
-     *         in: body
-     *         schema:
-     *           $ref: '#/components/schemas/User'
-     *     requestBody:
-     *       content:
-     *         'application/json':
-     *           schema:
-     *             $ref: '#/components/schemas/User'
-     *     responses:
-     *       200:
-     *         description: Retrived User By Id
-     *         content:
-     *           application/json:
-     *             schema:
-     *               $ref: '#/components/schemas/User'
-     */
-    router.patch('/user', authenticate, userController.updateUser.bind(userController));
-
-    /**
-     * @swagger
-     *
      * /api/user/{userId}:
      *   get:
      *     tags:
