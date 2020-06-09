@@ -165,7 +165,10 @@ module.exports = class UserRepository {
 
             updatedUser = await UserModel.findOneAndUpdate({
                 _id: id
-            }, data, {
+            }, {
+                languages: data.languages,
+                checklists: data.checklists
+            }, {
                 new: true
             }).populate({
                 path: 'checklists',
