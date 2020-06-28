@@ -13,10 +13,8 @@ module.exports = class ChecklistController {
     }
 
     async addNewChecklist(req, res, next) {
-        let checklist = req.body;
-        let newChecklist;
-        let user = req.user;
-        let userData = {};
+        const checklist = req.body;
+        const user = req.user;
 
         try {
             checklist.users = [];
@@ -26,12 +24,11 @@ module.exports = class ChecklistController {
             checklist.createdBy = user._id;
             checklist.modifiedBy = user._id;
 
-            newChecklist = await this.checklistRepo.insert(checklist);
+            const newChecklist = await this.checklistRepo.insert(checklist);
 
-            userData.checklists = user.checklists;
-            userData.checklists.push(newChecklist._id);
+            user.checklists.push(newChecklist._id);
 
-            await this.userRepo.update(user._id, userData);
+            await this.userRepo.update(user._id, user);
 
             await res.json(newChecklist);
         } catch (error) {
