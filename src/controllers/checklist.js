@@ -61,22 +61,19 @@ module.exports = class ChecklistController {
     }
 
     async addItemToChecklist(req, res, next) {
-        let addedItem;
-        let checklist;
-        let id = req.params.id;
-        let item = req.body; 
-        let user = req.user;
+        const id = req.params.id;
+        const item = req.body; 
+        const user = req.user;
 
         try {
-            checklist = await this.checklistRepo.findById(req.params.id);
-            user = await this.userRepo.findByUsername(user.username);
+            const checklist = await this.checklistRepo.findById(req.params.id);
 
             item.checklist = id;
             item.createdBy = user._id;
             item.modifiedBy = user._id;
             item.translations = await this.translationController.translateMany(item.text, user);
 
-            addedItem = await this.itemRepo.insert(item);
+            const addedItem = await this.itemRepo.insert(item);
 
             checklist.items.push(addedItem._id);
 
@@ -158,25 +155,25 @@ module.exports = class ChecklistController {
     }
 
     async deleteChecklistById(req, res, next) {
-        let checklist;
-        let id = req.params.id;
-        let users;
+        const id = req.params.id;
 
         try {
-            checklist = await this.checklistRepo.delete(id);
+            const checklist = await this.checklistRepo.delete(id);
 
             await this.itemRepo.deleteManyById(checklist.items);
 
-            users = await this.userRepo.findAllByChecklistId(id);
+            const users = await this.userRepo.findAllByChecklistId(id);
 
             for (let i = 0; i < users.length; i++) {
-                for (let k = 0; k < users[i].checklists.length; k++) {
-                    let index = users[i].checklists.indexOf(id)
+                const user = users[i];
+
+                for (let k = 0; k < user.checklists.length; k++) {
+                    const index = user.checklists.indexOf(id)
 
                     if (index > -1) {
-                        users[i].checklists.splice(index, 1)
+                        user.checklists.splice(index, 1)
 
-                        await this.userRepo.update(users[i]);
+                        await this.userRepo.update(user._id, user);
                     }
                 }
             }
