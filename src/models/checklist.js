@@ -1,6 +1,6 @@
 /// Libs
 const mongoose = require('mongoose');
-const validations = require('../utils/validations');
+const Validations = require('../utils/validations');
 /// Models
 const Item = require('./item');
 const User = require('./user');
