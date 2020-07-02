@@ -1,7 +1,7 @@
 class Validator {
     
     static itemsInArrayExistInExpectedArray(actualArray, expectedArray) {
-        return actualArray.every(item => expectedArray.includes(item));
+        return Array.isArray(actualArray) && actualArray.every(item => expectedArray.includes(item));
     }
 
     static isEmailValid(email) {

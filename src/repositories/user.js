@@ -42,7 +42,7 @@ module.exports = class UserRepository {
         if (!Validations.itemsInArrayExistInExpectedArray(languages, existingLanguageModels)) {
             const validationError = new mongoose.Error.ValidationError();
 
-            validationError.message = `Some specified languages are invalid "${languages.toString()}"`
+            validationError.message = `Specified languages are invalid "${languages || languages.toString()}"`
     
             throw validationError;
         }
@@ -199,7 +199,7 @@ module.exports = class UserRepository {
             if (!Validations.itemsInArrayExistInExpectedArray(languages, existingLanguageModels)) {
                 const validationError = new mongoose.Error.ValidationError();
 
-                validationError.message = `Some specified languages are invalid "${languages.toString()}"`
+                validationError.message = `Specified languages are invalid "${languages || languages.toString()}"`
         
                 throw validationError;
             }
