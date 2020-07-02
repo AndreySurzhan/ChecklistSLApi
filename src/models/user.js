@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const logging = require('../utils/logging');
-const validations = require('../utils/validations');
+const Validations = require('../utils/validations');
 /// Models
 const Checklist = require('./checklist');
 /// Local variables
@@ -184,7 +184,7 @@ UserSchema.virtual('token').get(function() {
 UserSchema.methods.generateHash = password => {
     let hashedPassword = null;
 
-    if (!validations.isNotEmpty(password)) {
+    if (!Validations.isNotEmpty(password)) {
         const validationError = new mongoose.Error.ValidationError();
 
         validationError.message = 'Password should not be empty'
@@ -249,9 +249,11 @@ UserSchema.methods.generateJWT = function() {
 
 UserSchema.set('toObject', { virtuals: true });
 
-UserSchema.path('username').validate((userEmail) => {
-    return validations.isNotEmpty(userEmail) && validations.isEmailValid(userEmail);
-}, 'Is not valid email address');
+UserSchema
+    .path('username')
+    .validate(
+        userEmail => Validations.isNotEmpty(userEmail) && Validations.isEmailValid(userEmail),
+        'Is not valid email address');
 
 if (mongoose.models.User) {
     User = mongoose.model('User');

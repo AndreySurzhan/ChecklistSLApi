@@ -1,10 +1,15 @@
 const logging = require('../utils/logging');
 const UserModel = require('../models/user');
-const NotFoundError = require('../utils/errors').NotFoundError
-const validations = require('../utils/validations');
+const NotFoundError = require('../utils/errors').NotFoundError;
+const Validations = require('../utils/validations');
 const mongoose = require('mongoose');
+const LanguageRepository = require('../repositories/language');
 
 module.exports = class UserRepository {
+    constructor() {
+        this.languageRepository = new LanguageRepository();
+    }
+
     /**
      * Method that inserts new user in database
      * 
@@ -18,7 +23,29 @@ module.exports = class UserRepository {
      * @memberof UserRepository
      */
     async insert(user) {
-        let createdUser = null
+        let createdUser = null            
+        
+        if (Validations.isObjectEmpty(data)) {
+            const validationError = new mongoose.Error.ValidationError();
+
+            validationError.message = 'Body should not be empty'
+    
+            throw validationError;
+        }
+
+        const languages = data.languages;
+            
+        let existingLanguageModels = await this.languageRepository.findAll();
+
+        existingLanguageModels = existingLanguageModels.map(language => language.code);
+
+        if (!Validations.itemsInArrayExistInExpectedArray(languages, existingLanguageModels)) {
+            const validationError = new mongoose.Error.ValidationError();
+
+            validationError.message = `Specified languages are invalid "${languages || languages.toString()}"`
+    
+            throw validationError;
+        }
 
         user.created = new Date();
 
@@ -155,10 +182,24 @@ module.exports = class UserRepository {
         let updatedUser;
 
         try {        
-            if (validations.isObjectEmpty(data)) {
+            if (Validations.isObjectEmpty(data)) {
                 const validationError = new mongoose.Error.ValidationError();
 
                 validationError.message = 'Body should not be empty'
+        
+                throw validationError;
+            }
+
+            const languages = data.languages;
+
+            let existingLanguageModels = await this.languageRepository.findAll();
+
+            existingLanguageModels = existingLanguageModels.map(language => language.code);
+
+            if (!Validations.itemsInArrayExistInExpectedArray(languages, existingLanguageModels)) {
+                const validationError = new mongoose.Error.ValidationError();
+
+                validationError.message = `Specified languages are invalid "${languages || languages.toString()}"`
         
                 throw validationError;
             }
