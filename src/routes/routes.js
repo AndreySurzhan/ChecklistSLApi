@@ -3,8 +3,8 @@ const passport = require('../auth/passport');
 const checklistRoutes = require('./checklist');
 const swaggerSpec = require('../swaggerSpec');
 const swaggerUi = require('swagger-ui-express');
-// const itemRoutes = require('./item');
 const userRoutes = require('./user');
+const languageRoutes = require('./language');
 /// Local variables
 let authenticate;
 
@@ -24,6 +24,7 @@ module.exports = (app, router) => {
       });
 
     checklistRoutes(router, authenticate);
+    languageRoutes(router, authenticate);
     userRoutes(router, authenticate, authenticateWithPassword);
 
     // All of our routes will be prefixed with '/api'

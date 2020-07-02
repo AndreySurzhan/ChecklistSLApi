@@ -20,7 +20,7 @@ module.exports = class ItemRepository extends Repository {
         let existedItems = null
 
         try {
-            existedItems = ItemModel.find({
+            existedItems = await ItemModel.find({
                 checklist: checklistId
             });
         } catch (error) {
