@@ -1,5 +1,5 @@
 const logging = require('../utils/logging');
-const LanguageModel = require('../models/Language');
+const LanguageModel = require('../models/language');
 const Repository = require('./repository');
 const NotFoundError = require('../utils/errors').NotFoundError
 
