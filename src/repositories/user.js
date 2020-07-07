@@ -25,7 +25,7 @@ module.exports = class UserRepository {
     async insert(user) {
         let createdUser = null            
         
-        if (Validations.isObjectEmpty(data)) {
+        if (Validations.isObjectEmpty(user)) {
             const validationError = new mongoose.Error.ValidationError();
 
             validationError.message = 'Body should not be empty'
@@ -33,7 +33,7 @@ module.exports = class UserRepository {
             throw validationError;
         }
 
-        const languages = data.languages;
+        const languages = user.languages;
             
         let existingLanguageModels = await this.languageRepository.findAll();
 
