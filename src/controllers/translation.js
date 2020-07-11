@@ -11,7 +11,13 @@ module.exports = class Translate {
                 translate.translate(text, {
                     to: user.languages[i]
                 }, (error, response) => {
-                    let translation = {};
+                    const translation = {};
+
+                    error = error
+                        ? error
+                        : !response.text && response.code
+                            ? new Error(response.message)
+                            : null;
 
                     if (error) {
                         logging.error(`Failed to translate "${text}"`)
