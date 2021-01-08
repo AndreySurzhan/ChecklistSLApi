@@ -4,7 +4,7 @@
     "description": "Web api for CheckListSL application",
     "main": "src/server.js",
     "scripts": {
-        "start": "pm2 src/server.js",
+        "start": "pm2 start src/server.js",
         "dev": "npx supervisor src/server.js",
         "test": "node tests/jasmine.js"
     },
