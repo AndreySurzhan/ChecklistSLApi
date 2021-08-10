@@ -54,5 +54,31 @@ Prod
 
 `npm start`
 
-> [Powered by Yandex.Translate](http://translate.yandex.com/)
+# DigitalOcean settings:
+1. [Setting up mongodDB Tutorial](https://www.digitalocean.com/community/tutorials/how-to-configure-remote-access-for-mongodb-on-ubuntu-20-04)
+2. Nginx settings live: `/etc/nginx/sites-available/api.checklistsl.com`
+
+```
+server {
+
+        listen 80;
+
+        server_name api.checklistsl.com www.api.checklistsl.com;
+
+        location / {
+                proxy_pass http://localhost:3000;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+        }
+
+
+    listen [::]:443; # manual
+    listen 443 ssl; # managed by Certbot
+    <ssl config>
+```
+3. `pm2` is used to run expressjs server
+4. Nginx is used as reverse proxy
 
