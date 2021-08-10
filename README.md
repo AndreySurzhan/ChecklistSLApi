@@ -34,8 +34,10 @@ HOST=localhost
 LOGGING_LEVEL=debug
 PASSWORD_RECOVERY_TOKEN_LIFE=12h
 PROTOCOL=https
-TRANSLATION_API_KEY=<api key>
 PORT=3000
+// https://cloud.google.com/docs/authentication/getting-started#setting_the_environment_variable
+// Replace KEY_PATH with the path of the JSON file that contains your service account key.
+GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"
 ```
 
 # Launch Api

@@ -1,7 +1,7 @@
 const ChecklistRepo = require('../repositories/checklist');
 const ItemRepo = require('../repositories/item');
 const UserRepo = require('../repositories/user');
-const TranslationController = require('../controllers/translation');
+const TranslationController = require('../controllers/google-translation');
 
 
 module.exports = class ChecklistController {

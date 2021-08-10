@@ -34,7 +34,7 @@ module.exports = class UserRepository {
         }
 
         const languages = user.languages;
-            
+        //TODO add chaching
         let existingLanguageModels = await this.languageRepository.findAll();
 
         existingLanguageModels = existingLanguageModels.map(language => language.code);
